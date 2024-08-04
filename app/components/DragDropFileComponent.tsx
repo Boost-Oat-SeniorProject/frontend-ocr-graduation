@@ -34,7 +34,7 @@ export function DragDropFileComponent(){
 
   const list = []
   for(let i=0; i<10; i++){
-    list.push(<li className="dark:bg-[#002222] bg-[#bcffff] shadow-sm odd:dark:shadow-gray-500 odd:shadow-black p-1 max-w-96 mx-auto my-2 hover:bg-gray-700">FilePath</li>)
+    list.push(<li className="dark:bg-[#002222] bg-[#b0eeee] shadow-sm odd:shadow-gray-500 p-1 max-w-96 mx-auto my-2 dark:hover:bg-gray-700 hover:bg-green-400">FilePath</li>)
   }
 
     return (
