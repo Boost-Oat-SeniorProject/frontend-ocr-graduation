@@ -50,6 +50,31 @@ export function DragDropFileComponent(){
     setFiles([]);
   }
 
+  // TODO Upload one file funciton
+  // * It doesn't have a api path for post methed, so You should set a path in fetch function.
+  const handleUpload = async () => {
+    if (files){
+      console.log("Uploading file...");
+    }
+
+    const formData = new FormData();
+    formData.append("file", files[0]);
+    
+    try{
+      const result = await fetch("localhost:.../extract",{
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await result.json();
+      console.log(data);
+      alert("Successful")
+    } catch(error){
+      console.error(error);
+      alert("Error")
+    }
+  }
+
     return (
         <div className="max-w-[500px] mx-auto min-h-96 dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl relative flex flex-col">
 
@@ -97,7 +122,7 @@ export function DragDropFileComponent(){
             
             {/**Submit files button and clear files button*/}
             <div className="right-0 bottom-0 flex flex-row-reverse p-2 relative w-full">
-              <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">Generate</button>
+              <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white" onClick={handleUpload}>Generate</button>
               <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white" onClick={handleClearFiles}>Clear</button>
             </div>
 
