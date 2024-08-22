@@ -1,10 +1,11 @@
 'use client'
-import { useRef, useState, DragEvent } from "react";
+import { useRef, useState, DragEvent, SyntheticEvent, SetStateAction } from "react";
 
 export function DragDropFileComponent(){
 
   const [files, setFiles] = useState<Array<File>>([]);
   const [dragActive, setDragActive] = useState<boolean>(false);
+  const inputRef = useRef<any>(null)
 
   function handleDragOver(e: DragEvent<HTMLDivElement>){
     e.preventDefault();
@@ -50,6 +51,29 @@ export function DragDropFileComponent(){
     setFiles([]);
   }
 
+  const openFileExplorer = () =>{
+    inputRef.current.value = "";
+    inputRef.current.click();
+  }
+
+  const handleChangeFiles = (e: SyntheticEvent) =>{
+    let file : FileList | null = (e.target as HTMLInputElement).files
+
+    try{
+      if(file === null){
+        throw "No file"
+      }
+      if(files.length !== 0){
+        throw "Still have a selected file"
+      }else{
+        setFiles((files:any) => [...files, file[0]])
+      }
+    }catch(error){
+      alert(`Error: ${error}`)
+    }
+  }
+
+
   // TODO Upload one file funciton
   // * It doesn't have a api path for post methed, so You should set a path in fetch function.
   const handleUpload = async () => {
@@ -85,22 +109,23 @@ export function DragDropFileComponent(){
 
 
             {/* Area of Dragged and Dropped File */}
-            <div className={`border-[#003333] dark:border-white border-2 border-dashed max-w-96 h-40 mx-auto w-full ${dragActive ? "dark:bg-gray-500 bg-gray-300" : "bg-transparent"}`}
+            <div className={`border-[#003333] dark:border-white border-2 border-dashed max-w-96 h-40 mx-auto w-full dark:hover:bg-slate-500 hover:bg-slate-300 hover:cursor-pointer ${dragActive ? "dark:bg-gray-500 bg-gray-300" : "bg-transparent"}`}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDragEnd={handleDragLeave}
                   onDrop={handleDrop}
+                  onClick={openFileExplorer}
             >
-              {/* <input type="file"
+              <input type="file"
                     accept=".pdf"
                     className="w-full h-full border border-white hidden hover:visible"
                     placeholder="helloworld"
-                    onChange={(e)=>{
-                      console.log(e.target.files)
-                    }}
-                /> */}
+                    onChange={handleChangeFiles}
+                    ref={inputRef}
+                    multiple={false}
+                />
 
-                <p className="relative top-1/2 translate-y-[-50%] text-center">Drag and Drop file in this Area</p>
+                <p className="relative top-1/2 translate-y-[-50%] text-center">Drag and Drop file or Click in this Area</p>
             </div>
 
 
