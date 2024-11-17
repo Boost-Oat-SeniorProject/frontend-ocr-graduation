@@ -7,12 +7,7 @@ export default function Home() {
 
   return (
     <main>
-      <div className="text-center text-2xl p-5 font-bold">
-        เว็บไซต์ตรวจสอบใบจบการศึกษา ณ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
-      </div>
-
       <DragDropFileComponent />
-
     </main>
   );
 }
