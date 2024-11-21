@@ -6,9 +6,11 @@ export function ShowGradeComponent(){
               Result Your Transcript
             </div>
 
-            <table className="table-auto border-collapse border border-white">
+            
+            {/* Show Student's Transcript Table */}
+            <table className="table-auto border-collapse border border-white m-auto bg-gray-300 dark:bg-transparent">
                 <thead>
-                    <tr className="bg-black">
+                    <tr className="dark:bg-green-900 bg-green-400">
                         <th className="border border-white px-4 py-2">Course-ID</th>
                         <th className="border border-white px-4 py-2">Course-Name</th>
                         <th className="border border-white px-4 py-2">Credit</th>
@@ -17,10 +19,10 @@ export function ShowGradeComponent(){
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="border border-white text-center">01418496</td>
-                        <td className="border border-white text-center">Selected Topic</td>
-                        <td className="border border-white text-center">3</td>
-                        <td className="border border-white text-center">A</td>
+                        <td className="border border-white text-center font-light">01418496</td>
+                        <td className="border border-white text-center font-light">Selected Topic</td>
+                        <td className="border border-white text-center font-light">3</td>
+                        <td className="border border-white text-center font-light">A</td>
                     </tr>
                 </tbody>
             </table>

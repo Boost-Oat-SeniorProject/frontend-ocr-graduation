@@ -25,19 +25,19 @@ export function DragDropFileComponent(){
     if (e.dataTransfer.files && e.dataTransfer.files[0]){
 
       // TODO drop multiple files
-      // for(let i=0; i<e.dataTransfer.files.length; i++){
-      //   const file = e.dataTransfer.files[i]
-      //   console.log(file)
-      //   if(file.type === "application/pdf"){
-      //     setFiles((files: any)=>[...files, file]);
-      //   }
-      // }
+      for(let i=0; i<e.dataTransfer.files.length; i++){
+        const file = e.dataTransfer.files[i]
+        console.log(file)
+        if(file.type === "application/pdf"){
+          setFiles((files: any)=>[...files, file]);
+        }
+      }
       
       // TODO drop a file only
-      const file = e.dataTransfer.files[0];
-      if(file.type === "application/pdf" && files.length == 0){
-        setFiles((files:any) => [...files, file])
-      }
+      // const file = e.dataTransfer.files[0];
+      // if(file.type === "application/pdf" && files.length == 0){
+      //   setFiles((files:any) => [...files, file])
+      // }
     }
   }
 
@@ -57,17 +57,19 @@ export function DragDropFileComponent(){
   }
 
   const handleChangeFiles = (e: SyntheticEvent) =>{
-    let file : FileList | null = (e.target as HTMLInputElement).files
+    let new_files : FileList | null = (e.target as HTMLInputElement).files
 
     try{
-      if(file === null){
+      if(new_files === null){
         throw "No file"
       }
-      if(files.length !== 0){
-        throw "Still have a selected file"
-      }else{
-        setFiles((files:any) => [...files, file[0]])
+      
+      for(let i=0; i<new_files.length; i++){
+        if (new_files[i].type === "application/pdf"){
+          setFiles((files: any)=>[...files, new_files[i]]);
+        }
       }
+
     }catch(error){
       alert(`Error: ${error}`)
     }
@@ -75,7 +77,7 @@ export function DragDropFileComponent(){
 
 
   // TODO Upload one file funciton
-  // * It doesn't have a api path for post methed, so You should set a path in fetch function.
+  // ! It doesn't have a api path for post methed yet, so You should set a path in fetch function.
   const handleUpload = async () => {
     if (files){
       console.log("Uploading file...");
@@ -122,7 +124,7 @@ export function DragDropFileComponent(){
                     placeholder="helloworld"
                     onChange={handleChangeFiles}
                     ref={inputRef}
-                    multiple={false}
+                    multiple={true}
                 />
 
                 <p className="relative top-1/2 translate-y-[-50%] text-center">Drag and Drop file or Click in this Area</p>
@@ -130,15 +132,15 @@ export function DragDropFileComponent(){
 
 
             {/**Show files which are draged and drop in this area */}
-            <ul className={`h-40  ${files.length > 5 ? "overflow-y-scroll" : "overflow-y-hidden"}`}>
+            <ul className={`${files.length > 0 ? "overflow-y-scroll max-h-64 block" : "hidden"}  accent-black w-5/6 m-auto my-4`}>
               {
                files.map((file, index) => (
-                  <li key={index} className="bg-black m-2 p-2 flex flex-row">
-                    <div className="flex-auto">
+                  <li key={index} className="dark:bg-black m-2 p-2 flex flex-row bg-green-500">
+                    <div className="flex-auto truncate text-sm my-auto">
                       {file.name}
                     </div>
-                    <div className="border border-red-500 flex-none w-7 text-center hover:bg-gray-500">
-                      <button onClick={()=>handleDelectFileByIndex(index)}>X</button>
+                    <div className="border border-red-500 flex min-w-8 h-8 hover:bg-gray-500 text-base hover:cursor-pointer font-bold">
+                      <p onClick={()=>handleDelectFileByIndex(index)} className="m-auto">X</p>
                     </div>
                   </li>
                 ))
@@ -146,7 +148,7 @@ export function DragDropFileComponent(){
             </ul>
             
             {/**Submit files button and clear files button*/}
-            <div className="right-0 bottom-0 flex flex-row-reverse p-2 relative w-full">
+            <div className="flex flex-row-reverse p-2 w-full">
               <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white" onClick={handleUpload}>Generate</button>
               <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white" onClick={handleClearFiles}>Clear</button>
             </div>
