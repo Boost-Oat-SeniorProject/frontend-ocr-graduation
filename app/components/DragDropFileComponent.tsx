@@ -90,7 +90,9 @@ export function DragDropFileComponent(){
     }
 
     const formData = new FormData();
-    formData.append("file", files[0]);
+    for(let i=0; i<files.length; i++){
+      formData.append("file", files[i]);
+    }
     
     try{
       const result = await fetch("localhost:.../extract",{
