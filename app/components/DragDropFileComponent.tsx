@@ -26,10 +26,13 @@ export function DragDropFileComponent(){
 
       // TODO drop multiple files
       for(let i=0; i<e.dataTransfer.files.length; i++){
-        const file = e.dataTransfer.files[i]
-        console.log(file)
-        if(file.type === "application/pdf"){
-          setFiles((files: any)=>[...files, file]);
+        const currentFile = e.dataTransfer.files[i]
+        console.log(currentFile)
+        if(currentFile.type === "application/pdf"){
+          let find_file = files.find((file)=>{return file.name == currentFile.name})
+          if (!find_file){
+            setFiles((files: any)=>[...files, currentFile]);
+          }
         }
       }
       
@@ -66,7 +69,10 @@ export function DragDropFileComponent(){
       
       for(let i=0; i<new_files.length; i++){
         if (new_files[i].type === "application/pdf"){
-          setFiles((files: any)=>[...files, new_files[i]]);
+          let find_file = files.find((file)=>{return file.name == new_files[i].name})
+          if (!find_file){
+            setFiles((files: any)=>[...files, new_files[i]]);
+          }
         }
       }
 
