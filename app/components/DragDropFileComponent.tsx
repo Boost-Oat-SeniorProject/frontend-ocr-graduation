@@ -95,7 +95,7 @@ export function DragDropFileComponent(){
     }
     
     try{
-      const result = await fetch("localhost:.../extract",{
+      const result = await fetch("http://localhost/extract",{
         method: 'POST',
         body: formData
       });
