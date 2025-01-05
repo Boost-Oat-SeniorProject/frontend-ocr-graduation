@@ -110,11 +110,11 @@ export function DragDropFileComponent(){
   }
 
     return (
-        <div className="max-w-[500px] mx-auto min-h-96 dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl relative flex flex-col">
+        <div className="max-w-[500px] mx-auto min-h-96 dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl relative grid grid-cols-1 content-around">
 
             { /* Header in UI of choosing file */ }
-            <div className="font-bold p-3 text-xl text-center">
-              Add Transcript Files
+            <div className="font-bold p-3 text-2xl text-center">
+              อัพโหลดไฟล์ใบรายงานผล
             </div>
 
 
@@ -135,12 +135,11 @@ export function DragDropFileComponent(){
                     multiple={true}
                 />
 
-                <p className="relative top-1/2 translate-y-[-50%] text-center">Drag and Drop file or Click in this Area</p>
+                <p className="relative top-1/2 translate-y-[-50%] text-center">ลากไฟล์หรือกดพื้นที่นี้เพื่ออัพโหลดไฟล์</p>
             </div>
 
-
             {/**Show files which are draged and drop in this area */}
-            <ul className={`${files.length > 0 ? "overflow-y-scroll max-h-64 block" : "hidden"}  accent-black w-5/6 m-auto my-4`}>
+            <ul className={`${files.length > 0 ? "overflow-y-scroll max-h-64 block" : "hidden"}  accent-black w-5/6 m-auto my-4 `}>
               {
                files.map((file, index) => (
                   <li key={index} className="dark:bg-black m-2 p-2 flex flex-row bg-green-500">
@@ -157,11 +156,9 @@ export function DragDropFileComponent(){
             
             {/**Submit files button and clear files button*/}
             <div className="flex flex-row-reverse p-2 w-full">
-              <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white" onClick={handleUpload}>Generate</button>
-              <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white" onClick={handleClearFiles}>Clear</button>
+              <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white" onClick={handleUpload}>ตรวจสอบ</button>
+              <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white" onClick={handleClearFiles}>ล้างไฟล์</button>
             </div>
-
-
       </div>
     )
 }
