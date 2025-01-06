@@ -9,7 +9,7 @@ export function ShowGradeComponent(){
             grade: "A"
         },
         {
-            course_id: "01418496",
+            course_id: "01418497",
             course_name: "Selected Topic",
             course_year: "2560",
             credit: 3,
@@ -39,7 +39,7 @@ export function ShowGradeComponent(){
                 <tbody>
                     {
                         subjectList.map((course)=>(
-                            <tr>
+                            <tr key={course.course_id}>
                                 <td className="border border-white text-center font-light">{course.course_id}</td>
                                 <td className="border border-white text-center font-light">{course.course_name}</td>
                                 <td className="border border-white text-center font-light">{course.course_year}</td>

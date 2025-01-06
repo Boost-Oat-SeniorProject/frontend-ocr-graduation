@@ -10,17 +10,17 @@ export function ShowProfileComponent(){
             <form className="mx-auto w-5/6 grid grid-rows-3 grid-cols-2 justify-stretch gap-4">
                 <div className="flex flex-row justify-between items-center">
                     <label>ชื่อ</label>
-                    <input className="p-1" placeholder="Firstname"/>
+                    <input className="p-1 text-black" placeholder="Firstname"/>
                 </div>
 
                 <div className="flex flex-row justify-between items-center">
                     <label>นามสกุล</label>
-                    <input className="p-1" placeholder="Lastname"/>
+                    <input className="p-1 text-black" placeholder="Lastname"/>
                 </div>
 
                 <div className="flex flex-row justify-between items-center">
                     <label>รหัสนิสิต</label>
-                    <input className="p-1" placeholder="Student ID"/>
+                    <input className="p-1 text-black" placeholder="Student ID"/>
                 </div>
                 
                 <div className="flex flex-row justify-between items-center border-2 border-transparent hover:border-green-300">
