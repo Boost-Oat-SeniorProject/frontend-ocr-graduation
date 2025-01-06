@@ -58,7 +58,7 @@ export function ShowGradeComponent(){
         <div className="max-w-[750px] mx-auto min-h-96 dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl">
             { /* Header in UI of extraxt */ }
             <div className="font-bold p-3 text-xl text-center">
-              Result Your Transcript
+              ผลลัพท์การตรวจสอบใบรายงานคะแนน
             </div>
 
             <div className="text-center">

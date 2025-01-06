@@ -1,5 +1,6 @@
 'use client'
 import { useRef, useState, DragEvent, SyntheticEvent, SetStateAction } from "react";
+import { Alert } from "@nextui-org/alert";
 
 export function DragDropFileComponent(){
 

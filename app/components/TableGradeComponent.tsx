@@ -1,29 +1,27 @@
-export function TableGradeComponent({subjectList}:any){
+import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@nextui-org/table";
 
-    return(
-        <table className="table-auto border-collapse border border-white m-auto bg-gray-300 dark:bg-transparent">
-            <thead>
-                <tr className="dark:bg-green-900 bg-green-400">
-                    <th className="border border-white px-4 py-2">Course-ID</th>
-                    <th className="border border-white px-4 py-2">Course-Name</th>
-                    <th className="border border-white px-4 py-2">Course-Year</th>
-                    <th className="border border-white px-4 py-2">Credit</th>
-                    <th className="border border-white px-4 py-2">Grade</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    subjectList.map((course:any)=>(
-                        <tr key={course.course_id}>
-                            <td className="border border-white text-center font-light">{course.course_id}</td>
-                            <td className="border border-white text-center font-light">{course.course_name}</td>
-                            <td className="border border-white text-center font-light">{course.course_year}</td>
-                            <td className="border border-white text-center font-light">{course.credit}</td>
-                            <td className="border border-white text-center font-light">{course.grade}</td>
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </table>
-    )
+export function TableGradeComponent({subjectList}:{subjectList:Array<{course_id:string, course_name:string, course_year:string, credit:number, grade:string}>}){
+
+    return (
+        <Table aria-label="Example static collection table" className="text-black">
+            <TableHeader>
+                <TableColumn className="text-center bg-green-500"><span className="text-black">รหัสวิชา</span></TableColumn>
+                <TableColumn className="text-center bg-green-400"><span className="text-black">ชื่อวิชา</span></TableColumn>
+                <TableColumn className="text-center bg-green-300"><span className="text-black">ปีหลักสูตร</span></TableColumn>
+                <TableColumn className="text-center bg-green-200"><span className="text-black">หน่วยกิจ</span></TableColumn>
+                <TableColumn className="text-center bg-green-100"><span className="text-black">เกรด</span></TableColumn>
+            </TableHeader>
+            <TableBody emptyContent={"ไม่มีรายวิชาในระบบ"} items={subjectList}>
+                {(course)=>(
+                    <TableRow key={course.course_id}>
+                        <TableCell className="text-center">{course.course_id}</TableCell>
+                        <TableCell className="text-center">{course.course_name}</TableCell>
+                        <TableCell className="text-center">{course.course_year}</TableCell>
+                        <TableCell className="text-center">{course.credit}</TableCell>
+                        <TableCell className="text-center">{course.grade}</TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
+    );
 }
