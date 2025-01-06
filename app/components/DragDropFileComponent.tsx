@@ -1,6 +1,7 @@
 'use client'
 import { useRef, useState, DragEvent, SyntheticEvent, SetStateAction } from "react";
 import { Alert } from "@nextui-org/alert";
+import { Tooltip } from "@nextui-org/tooltip";
 
 export function DragDropFileComponent(){
 
@@ -157,8 +158,12 @@ export function DragDropFileComponent(){
             
             {/**Submit files button and clear files button*/}
             <div className="flex flex-row-reverse p-2 w-full">
-              <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white" onClick={handleUpload}>ตรวจสอบ</button>
-              <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white" onClick={handleClearFiles}>ล้างไฟล์</button>
+              <Tooltip content="อ่านใบรายงานคะแนนนิสิต" color="success">
+                  <button className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white" onClick={handleUpload}>ตรวจสอบ</button>          
+              </Tooltip>
+              <Tooltip content="ล้างไฟล์ใบรายงานคะแนนทั้งหมด" color="danger">
+                  <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white" onClick={handleClearFiles}>ล้างไฟล์</button>
+              </Tooltip>
             </div>
       </div>
     )

@@ -9,6 +9,7 @@ export function ShowGradeComponent(){
             course_name: "Selected Topic",
             course_year: "2560",
             credit: 3,
+            semeter: `2/2564`,
             grade: "A"
         },
         {
@@ -16,6 +17,7 @@ export function ShowGradeComponent(){
             course_name: "Selected Topic",
             course_year: "2560",
             credit: 3,
+            semeter: `2/2564`,
             grade: "A"
         }
     ]
@@ -26,6 +28,7 @@ export function ShowGradeComponent(){
             course_name: "Software Engineer",
             course_year: "2560",
             credit: 3,
+            semeter: `2/2564`,
             grade: "A"
         },
         {
@@ -33,6 +36,7 @@ export function ShowGradeComponent(){
             course_name: "Selected Topic",
             course_year: "2560",
             credit: 3,
+            semeter: `2/2564`,
             grade: "A"
         }
     ]
@@ -40,9 +44,10 @@ export function ShowGradeComponent(){
     const subjectList2 = [
         {
             course_id: "01418123",
-            course_name: "Computing Scienece",
+            course_name: "Computing Scienece123456789123456789123456789",
             course_year: "2560",
             credit: 3,
+            semeter: `2/2564`,
             grade: "A"
         },
         {
@@ -50,6 +55,7 @@ export function ShowGradeComponent(){
             course_name: "Selected Topic",
             course_year: "2560",
             credit: 3,
+            semeter: `2/2564`,
             grade: "A"
         }
     ]
