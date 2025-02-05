@@ -22,6 +22,18 @@ body {
   min-height: 100vh;
 }
 
+@layer components{
+  td:nth-child(even), th:nth-child(even){
+    @apply bg-green-200 dark:bg-[#24493C]
+  }
+  td:nth-child(odd), th:nth-child(odd){
+    @apply bg-lime-200 dark:bg-[#033]
+  }
+  td:nth-child(2), th:nth-child(2){
+    @apply truncate max-w-48
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

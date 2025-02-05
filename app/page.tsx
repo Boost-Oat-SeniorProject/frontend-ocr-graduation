@@ -1,6 +1,6 @@
 'use client'
 import { useState, DragEvent, SyntheticEvent, useRef, use} from "react";
-import { Tooltip, Alert, Spinner, Progress } from "@nextui-org/react";
+import { Tooltip, Alert, Progress } from "@heroui/react";
 import {AnimatePresence, motion} from "framer-motion"
 
 export default function Home() {
