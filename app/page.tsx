@@ -102,18 +102,20 @@ export default function Home() {
     }
     
     try{
-      const result = await fetch("http://localhost/extract",{
+      const result = await fetch("http://localhost:8000/extract",{
         method: 'POST',
         body: formData
       });
 
       const data = await result.json();
-      console.log(data);
+      localStorage.setItem("resultTranscript", JSON.stringify(data))
+      var data2 = localStorage.getItem("resultTranscript") || ""
+      console.log(JSON.parse(data2))
       setLoading(false)
-      alert("Success")
     } catch(error){
       setLoading(false)
       noticeUploadfile("อ่านไฟล์ไม่สำเร็จ")
+      console.error(error)
     }
   }
 

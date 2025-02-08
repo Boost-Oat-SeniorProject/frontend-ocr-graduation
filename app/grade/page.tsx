@@ -1,12 +1,6 @@
-'use client'
-import { useState, useRef } from "react";
-import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
 import {TableShowGradeComponent} from "../components/TableShowGradeComponent"
 import { ResultDashboardComponent } from "../components/ResultDashboardComponent";
 export default function Grade(){
-    const [firstname, setFirstname] = useState<string>()
-    const [lastname, setLastname] = useState<string>()
-    const [studentID, setStudentID] = useState<string>()
 
     const subjectGroups = [
         {
@@ -56,11 +50,29 @@ export default function Grade(){
                 <ResultDashboardComponent title="หมวดวิชาเลือกเสรี" />
             </div>
             <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
-            {
-                subjectGroups.map((subjectGroup)=>
-                    <TableShowGradeComponent key={subjectGroup.subjectGroupName} title={subjectGroup.subjectGroupName} subGroupList={subjectGroup.subsubjectGroup}/>
-                )
-            }
+           <TableShowGradeComponent title="หมวดวิชาศึกษาทั่วไป" subGroupList={[
+                "กลุ่มสาระอยู่ดีมีสุข",
+                "กลุ่มสาระศาสตร์แห่งผู้ประกอบการ",
+                "กลุ่มสาระภาษากับการสื่อสาร",
+                "กลุ่มสาระพลเมืองไทยและพลเมืองโลก",
+                "กลุ่มสาระสุนทรียศาสตร์",
+                "เลือกรายวิชาใน 5 กลุ่มสาระ",
+            ]}/>
+            <TableShowGradeComponent title="หมวดวิชาเฉพาะ" subGroupList={[
+                "วิชาแกน",
+                "วิชาเฉพาะบังคับ",
+                "วิชาเฉาะเลือก"
+            ]}/>
+            <TableShowGradeComponent title="หมวดวิชาเฉพาะ" subGroupList={[
+                "วิชาแกน",
+                "วิชาเฉพาะบังคับ",
+                "วิชาเฉาะเลือก"
+            ]}/>
+            <TableShowGradeComponent title="หมวดวิชาเฉพาะ" subGroupList={[
+                "วิชาแกน",
+                "วิชาเฉพาะบังคับ",
+                "วิชาเฉาะเลือก"
+            ]}/>
            </div>
         </main>
     )
