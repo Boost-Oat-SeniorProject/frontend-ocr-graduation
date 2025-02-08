@@ -102,7 +102,7 @@ export default function Home() {
     }
     
     try{
-      const result = await fetch("http://localhost/extract",{
+      const result = await fetch(`${process.env.BACKEND_URL}/extract`,{
         method: 'POST',
         body: formData
       });
