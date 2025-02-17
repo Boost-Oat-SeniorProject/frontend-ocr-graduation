@@ -2,7 +2,9 @@
 import { useState, useRef } from "react";
 import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
 import {TableShowGradeComponent} from "../components/TableShowGradeComponent"
-import { ResultDashboardComponent } from "../components/ResultDashboardComponent";
+import { ResultCreditDashboardComponent } from "../components/ResultCreditDashboardComponent";
+import { SubjectGroupTableBodyComponent } from "../components/SubjectGroupTableBodyComponent";
+import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 export default function Grade(){
     const result = localStorage.getItem("data")
     // localStorage.removeItem("data")
@@ -17,16 +19,21 @@ export default function Grade(){
                 <div><span className="font-bold text-lg">ชื่อ</span> : {data.englishName.fullname}</div>
                 <div><span className="font-bold text-lg">นามสกุล</span> : {data.englishName.lastname}</div>
                 <div><span className="font-bold text-lg">รหัสนิสิต</span> : {data.studentId}</div>
-                <ResultDashboardComponent title="หมวดวิชาศึกษาทั่วไป" leastCredit={data.result[0].leastCreditAmount} amountCredit={data.result[0].sumCreditAmount} status={data.result[0].status}/>
-                <ResultDashboardComponent title="หมวดวิชาเฉพาะ" leastCredit={data.result[1].leastCreditAmount} amountCredit={data.result[1].sumCreditAmount} status={data.result[0].status}/>
-                <ResultDashboardComponent title="หมวดวิชาเลือกเสรี" leastCredit={data.result[2].leastCreditAmount} amountCredit={data.result[2].sumCreditAmount} status={data.result[0].status}/>
+            </div>
+            <hr className="w-4/5 mx-auto border-black dark:border-white"/>
+            <div className="m-4 grid grid-cols-4 gap-2">
+                <ResultCreditDashboardComponent title="หมวดวิชาศึกษาทั่วไป" leastCredit={data.result[0].leastCreditAmount} amountCredit={data.result[0].sumCreditAmount} status={data.result[0].status}/>
+                <ResultCreditDashboardComponent title="หมวดวิชาเฉพาะ" leastCredit={data.result[1].leastCreditAmount} amountCredit={data.result[1].sumCreditAmount} status={data.result[0].status}/>
+                <ResultCreditDashboardComponent title="หมวดวิชาเลือกเสรี" leastCredit={data.result[2].leastCreditAmount} amountCredit={data.result[2].sumCreditAmount} status={data.result[0].status}/>
+                <ResultGraduateDashboard status={data.isGraduated}/>
             </div>
             <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
             {
                 data.result.map((result:any)=>(
-                    <TableShowGradeComponent key={result.groupName} title={result.groupName} subGroupList={result.subGroups} credit={result.leastCreditAmount}/>
+                    <TableShowGradeComponent key={result.groupName} title={result.groupName} subGroupList={result.subGroups} leastCredit={result.leastCreditAmount} sumCredit={result.sumCreditAmount}/>
                 ))
             }
+            <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupName} courses={data.notFoundCourses.courses}/>
            </div>
 
 
