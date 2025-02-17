@@ -16,7 +16,7 @@ export default function Grade(){
             <div className="m-4 grid grid-cols-3 gap-2">
                 <div><span className="font-bold text-lg">ชื่อ</span> : {data.englishName.fullname}</div>
                 <div><span className="font-bold text-lg">นามสกุล</span> : {data.englishName.lastname}</div>
-                <div><span className="font-bold text-lg">รหัสนิสิต</span> : {data.studentID}</div>
+                <div><span className="font-bold text-lg">รหัสนิสิต</span> : {data.studentId}</div>
                 <ResultDashboardComponent title="หมวดวิชาศึกษาทั่วไป" leastCredit={data.result[0].leastCreditAmount} amountCredit={data.result[0].sumCreditAmount} status={data.result[0].status}/>
                 <ResultDashboardComponent title="หมวดวิชาเฉพาะ" leastCredit={data.result[1].leastCreditAmount} amountCredit={data.result[1].sumCreditAmount} status={data.result[0].status}/>
                 <ResultDashboardComponent title="หมวดวิชาเลือกเสรี" leastCredit={data.result[2].leastCreditAmount} amountCredit={data.result[2].sumCreditAmount} status={data.result[0].status}/>
@@ -28,6 +28,8 @@ export default function Grade(){
                 ))
             }
            </div>
+
+
         </main>
     )
 }

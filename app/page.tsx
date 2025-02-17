@@ -97,7 +97,7 @@ export default function Home() {
     
           {
             pending &&
-            <motion.div className="absolute top-0 w-full h-full bg-black/50" initial={{opacity: 0}} animate={{opacity:1}} exit={{opacity:0}}>
+            <motion.div className="absolute top-0 w-full h-full bg-black/50 z-50" initial={{opacity: 0}} animate={{opacity:1}} exit={{opacity:0}}>
                <Progress isIndeterminate size="lg" className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2" label="Loading..." classNames={{track:"bg-green-500"}}/>
             </motion.div>
           }
