@@ -8,7 +8,7 @@ import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 import { ResultGradeDashboardComponent } from "../components/ResultGradeDashboardComponent";
 export default function Grade(){
     const [result, setResult] = useState(localStorage.getItem("data"))
-    localStorage.removeItem("data")
+    // localStorage.removeItem("data")
     const data = result ? JSON.parse(result) : null
 
     return (
@@ -27,7 +27,7 @@ export default function Grade(){
                 <ResultCreditDashboardComponent title="หมวดวิชาเฉพาะ" leastCredit={data.result[1].leastCreditAmount} amountCredit={data.result[1].sumCreditAmount} status={data.result[1].status}/>
                 <ResultCreditDashboardComponent title="หมวดวิชาเลือกเสรี" leastCredit={data.result[2].leastCreditAmount} amountCredit={data.result[2].sumCreditAmount} status={data.result[2].status}/>
                 <ResultGraduateDashboard status={data.isGraduated}/>
-                <ResultGradeDashboardComponent gpa={data.gpa}/>
+                <ResultGradeDashboardComponent gpa={data.gpa} message={data.message}/>
             </div>
             <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
             {
@@ -35,7 +35,7 @@ export default function Grade(){
                     <TableShowGradeComponent key={result.groupName} title={result.groupNameTh} subGroupList={result.subGroups} leastCredit={result.leastCreditAmount} sumCredit={result.sumCreditAmount} status={result.status}/>
                 ))
             }
-            <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.courses} status={false}/>
+            <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.Course} status={false}/>
            </div>
 
 

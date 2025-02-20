@@ -33,7 +33,7 @@ export function SubjectGroupTableBodyComponent({subtitle="", subleastcredit=0, c
                                 <TableCell className="text-center">{course.courseId}</TableCell>
                                 <TableCell><Tooltip content={course.courseName} placement="top-start" color="success"><p className="truncate">{course.courseName}</p></Tooltip></TableCell>
                                 <TableCell className="text-center">{"-"}</TableCell>
-                                <TableCell className="text-center">{course.creditAmount}</TableCell>
+                                <TableCell className="text-center">{course.creditAmount || "-"}</TableCell>
                                 <TableCell className="text-center">{course.enrollmentDate}</TableCell>
                                 <TableCell className="text-center">{course.grade}</TableCell>
                             </TableRow>

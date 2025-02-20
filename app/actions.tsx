@@ -13,6 +13,10 @@ export async function handleUpload(prevState:any, formdata:FormData) {
             body: formdata
         })
 
+        if(!result.ok){
+            throw new Error("ไฟล์ดังกล่าวไม่ใช่ใบรายงานคะแนน")
+        }
+
         const data = await result.json()
         
         return {message: "", isNotPass: false, result: data}

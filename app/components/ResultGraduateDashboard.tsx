@@ -11,7 +11,7 @@ export function ResultGraduateDashboard({status=false}:{status:boolean}){
         </CardBody>
         <CardFooter>
             <h4 className="mx-auto text-sm"><span className="font-bold">ผ่าน</span> : เรียนครบหลักสูตร</h4>
-            <h4 className="mx-auto text-sm"><span className="font-bold">ไม่ผ่าน</span> : ยังเรียนไม่ครบหลักสูตร</h4>
+            <h4 className="mx-auto text-sm"><span className="font-bold">ไม่ผ่าน</span> : ยังเรียนไม่ครบหลักสูตรหรืออื่น ๆ</h4>
         </CardFooter>
     </Card>
     )

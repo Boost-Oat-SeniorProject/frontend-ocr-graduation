@@ -85,6 +85,10 @@ export default function Home() {
     }, 3000);
   }
 
+  const deleteFile = () =>{
+    setFile(null)
+  }
+
     return (
       <main>
         <AnimatePresence>
@@ -107,7 +111,7 @@ export default function Home() {
           <form action={formAction}>
             { /* Header in UI of choosing file */ }
             <div className="font-bold p-3 text-2xl text-center">
-              อัพโหลดไฟล์ใบรายงานผล
+              อัพโหลดไฟล์ใบรายงานคะแนน
             </div>
           
             {/* Area of Dragged and Dropped File */}
@@ -127,24 +131,40 @@ export default function Home() {
                     name="file"
                 />
 
-                <p className="relative top-1/2 translate-y-[-50%] text-center">ลากไฟล์หรือกดพื้นที่นี้เพื่ออัพโหลดไฟล์</p>
+                <p className="relative top-1/2 translate-y-[-50%] text-center">ลากไฟล์หรือกดพื้นที่นี้เพื่ออัพโหลดไฟล์<br />( ขนาดไฟล์ไม่เกิน 1 MB )</p>
             </div>
             
-          <div className="h-1/4 bg-black my-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-            </svg>
-            {file?.name}
+          <div className="h-1/5 my-3">
+          <AnimatePresence>
+            {
+              file &&
+              <motion.div className={`flex justify-between dark:bg-black bg-lime-300 w-2/3 mx-auto p-5 rounded-full`} initial={{opacity: 0, scale:0}} animate={{opacity:1, scale:1}} exit={{opacity:0, scale:0}}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+              </svg>
+
+              <div className="truncate mx-2">
+                {file?.name}
+              </div>
+
+              <div className="dark:bg-orange-400 bg-orange-400 cursor-pointer transition duration-300 hover:bg-white hover:outline hover:outline-orange-400 hover:rounded-sm" onClick={deleteFile}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                  <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </motion.div>
+            }
+          </AnimatePresence>
           </div>
 
             {/**Submit files button and clear files button*/}
             <div className="flex flex-row-reverse p-2 w-full">
               <Tooltip content="อ่านใบรายงานคะแนนนิสิต" color="success">
-                  <button type="submit" disabled={pending} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">ตรวจสอบ</button>          
+                  <button type="submit" disabled={pending || !file} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">ตรวจสอบ</button>          
               </Tooltip>
-              <Tooltip content="ล้างไฟล์ใบรายงานคะแนนทั้งหมด" color="danger">
+              {/* <Tooltip content="ล้างไฟล์ใบรายงานคะแนนทั้งหมด" color="danger">
                   <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white">ล้างไฟล์</button>
-              </Tooltip>
+              </Tooltip> */}
             </div>
           </form>
         </div>
