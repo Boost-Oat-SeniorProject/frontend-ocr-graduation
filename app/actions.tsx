@@ -1,10 +1,7 @@
 'use server'
-import { redirect} from "next/navigation";
-
 
 export async function handleUpload(prevState:any, formdata:FormData) {
     const file = formdata.get("file")
-    console.log(file)
     
     try{
         if (file?.name === 'undefined'){
@@ -17,7 +14,6 @@ export async function handleUpload(prevState:any, formdata:FormData) {
         })
 
         const data = await result.json()
-        console.log(data)
         
         return {message: "", isNotPass: false, result: data}
 

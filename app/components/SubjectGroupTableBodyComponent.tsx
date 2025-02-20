@@ -4,16 +4,17 @@ type SubjectGroupProps = {
     subtitle?:string,
     subleastcredit?:number,
     subsumcredit?:number,
-    courses:Array<object>
+    courses:Array<object>,
+    status: boolean
 }
 
-export function SubjectGroupTableBodyComponent({subtitle="", subleastcredit=0, courses, subsumcredit=0}:SubjectGroupProps){
+export function SubjectGroupTableBodyComponent({subtitle="", subleastcredit=0, courses, subsumcredit=0, status}:SubjectGroupProps){
     
     return (
         <div className="my-10">
            <div className="flex justify-between">
                 <h1 className="ml-16 text-lg font-bold">{subtitle ? subtitle : "???"}</h1>
-                <p className="mr-16 text-lg font-extralight">{ subsumcredit && subleastcredit ? `จำนวนหน่วยกิตรวม ${subsumcredit} >= ${subleastcredit} หน่วนกิต` : ""}</p>
+                <p className={`mr-16 text-lg font-extralight rounded-full`}>{ subsumcredit && subleastcredit ? `จำนวนหน่วยกิตรวม ${subsumcredit} >= ${subleastcredit} หน่วนกิต` : ""}</p>
             </div>
             <Table aria-label="TranscriptTable" classNames={{wrapper:"dark:bg-[#005555] w-5/6 mx-auto", th:"text-stone-400 text-sm dark:text-stone-300 text-center", td:"dark:text-stone-100"}}>
                 <TableHeader>
@@ -25,7 +26,7 @@ export function SubjectGroupTableBodyComponent({subtitle="", subleastcredit=0, c
                     <TableColumn>เกรด</TableColumn>
                 </TableHeader>
 
-                <TableBody emptyContent={"ไม่ม่วิชาในใบรายงานคะแนน"}>
+                <TableBody emptyContent={"ไม่มีวิชาในใบรายงานคะแนน"}>
                     {   courses &&
                         courses.map((course:any)=>(
                             <TableRow key={course.courseName}>
