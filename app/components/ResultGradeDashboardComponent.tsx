@@ -7,7 +7,7 @@ export function ResultGradeDashboardComponent({gpa, message=""}:{gpa:number, mes
             <h1 className="mx-auto bg-lime-500 px-3 py-1 rounded-full">เกรดเฉลี่ย (GPA)</h1>
         </CardHeader>
         <CardBody>
-            <h2 className={`mx-auto text-2xl ${message && "text-sm"} font-bold`}>{message ? message: gpa}</h2>
+            <h2 className={`mx-auto text-2xl ${message && "text-sm"} font-bold`}>{gpa || "ไม่สามารถคำนวณเกรดได้"}</h2>
         </CardBody>
         <CardFooter>
            

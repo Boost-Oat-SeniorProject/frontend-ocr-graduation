@@ -9,7 +9,7 @@ export function ResultCreditDashboardComponent({title, leastCredit, amountCredit
                 <h2 className="mx-auto text-2xl font-bold">{status ? "ผ่าน" : "ไม่ผ่าน"}</h2>
             </CardBody>
             <CardFooter>
-                <h4 className={`mx-auto ${status ? "bg-lime-400" : "bg-orange-400 dark:bg-orange-600"} rounded-full px-2`}><span className="underline">{amountCredit}</span> <span>&#8804;</span> {leastCredit} <span className="font-semibold">หน่วยกิต</span></h4>
+                <h4 className={`mx-auto ${status ? "bg-lime-400" : "bg-orange-400 dark:bg-orange-600"} rounded-full px-2`}><span className="underline">{amountCredit}</span> <span>&#8805;</span> {leastCredit} <span className="font-semibold">หน่วยกิต</span></h4>
             </CardFooter>
         </Card>
     )
