@@ -4,7 +4,7 @@ export async function handleUpload(prevState:any, formdata:FormData) {
     const file = formdata.get("file")
     
     try{
-        if (file?.name === 'undefined'){
+        if (file instanceof File && file?.name === 'undefined'){
             throw new Error("กรุณาใส่ไฟล์ใบรายงานคะแนน")
         }
 

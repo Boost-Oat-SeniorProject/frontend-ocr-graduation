@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="text-center text-2xl p-5 font-bold">
-          เว็บไซต์ตรวจสอบใบจบการศึกษา ณ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
+          เว็บไซต์ตรวจสอบใบจบการศึกษาภาควิชาวิทยาการคอมพิวเตอร์ <br />ณ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
         </div>
         {children}
       </body>

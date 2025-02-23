@@ -24,7 +24,6 @@ export default function Home() {
       noticeUploadfile(state.message)
     }else{
       if (state.result !== null){
-        console.log(state.result)
         localStorage.setItem("data", JSON.stringify(state.result))
         router.push("/grade")
       }
@@ -73,7 +72,6 @@ export default function Home() {
     if (newFile && newFile.type === "application/pdf"){
       setFile(newFile)
     }
-    console.log(newFile)
   }
 
   const noticeUploadfile = (text:string) => {

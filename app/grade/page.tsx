@@ -1,18 +1,86 @@
 'use client'
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
 import {TableShowGradeComponent} from "../components/TableShowGradeComponent"
 import { ResultCreditDashboardComponent } from "../components/ResultCreditDashboardComponent";
 import { SubjectGroupTableBodyComponent } from "../components/SubjectGroupTableBodyComponent";
 import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 import { ResultGradeDashboardComponent } from "../components/ResultGradeDashboardComponent";
+import { div } from "framer-motion/client";
+
+type NotCourseObject = {
+    courseName: string,
+    courseId: string,
+    grade: string,
+    enrollmentDate: string
+}
+
+type CourseObject = {
+    courseName: string,
+    courseId: string,
+    creditAmount: number,
+    grade: string,
+    enrollmentDate: string
+}
+
+type SubGroupObject = {
+    subGroupName: string,
+    subGroupNameTh: string,
+    courses: Array<CourseObject>,
+    leastCreditAmount: number,
+    sumCreditAmount: number,
+    status: boolean
+}
+
+type GroupObject = {
+    groupName: string,
+    groupNameTh: string,
+    subGroups: Array<SubGroupObject>,
+    leastCreditAmount: number,
+    sumCreditAmount: number,
+    status: boolean
+}
+
+type ReusltTranscriptObject ={
+    studentId: string,
+    thatName: string,
+    englishName: {
+        fullname:string,
+        lastname:string
+    },
+    faculty: string,
+    result: Array<GroupObject>,
+    message: string,
+    totalCredit: number,
+    notFoundCourses: {
+        GroupNameTh: string,
+        Course: Array<NotCourseObject>
+    },
+    isGraduated: boolean,
+    gpa: number
+}
+
+const getResultTranscript = () =>{
+    const storedData = localStorage.getItem("data")
+    const result = storedData ? JSON.parse(storedData) : {}
+    return result
+}
+
 export default function Grade(){
-    const [result, setResult] = useState(localStorage.getItem("data"))
-    // localStorage.removeItem("data")
-    const data = result ? JSON.parse(result) : null
+    
+    const [data, setData] = useState<ReusltTranscriptObject>()
+
+    useEffect(()=>{
+        const getData = getResultTranscript()
+        if (getData != null){
+            setData(getData)
+        }
+    }, [])
 
     return (
         <main>
+            {
+                data ? 
            <div className="dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl max-w-5xl mx-auto">
             <h1 className="text-xl font-bold text-center my-4">ผลลัพท์การตรวจสอบใบรายงานคะแนน</h1>
             <hr className="w-4/5 mx-auto border-black dark:border-white"/>
@@ -37,8 +105,11 @@ export default function Grade(){
             }
             <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.Course} status={false}/>
            </div>
-
+           :
+           <div></div>
+            }
 
         </main>
+
     )
 }
