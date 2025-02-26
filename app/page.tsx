@@ -4,6 +4,7 @@ import { Tooltip, Alert, Progress } from "@heroui/react";
 import {AnimatePresence, motion} from "framer-motion"
 import { handleUpload } from "./actions";
 import { useRouter } from "next/navigation";
+// import { useTheme } from "next-themes";
 
 export default function Home() {
   const initState ={
@@ -18,6 +19,9 @@ export default function Home() {
   const [textAlert, setTextAlert] = useState<string>("")
   const [state, formAction, pending] = useActionState(handleUpload, initState)
   const router = useRouter()
+  // const {theme, setTheme} = useTheme()
+
+  // setTheme("light")
 
   useEffect(()=>{
     if (state.isNotPass){
@@ -129,7 +133,7 @@ export default function Home() {
                     name="file"
                 />
 
-                <p className="relative top-1/2 translate-y-[-50%] text-center">ลากไฟล์หรือกดพื้นที่นี้เพื่ออัพโหลดไฟล์<br />( ขนาดไฟล์ไม่เกิน 1 MB )</p>
+                <p className="relative top-1/2 translate-y-[-50%] text-center">ลากไฟล์หรือกดพื้นที่นี้เพื่ออัพโหลดไฟล์<br />( ขนาดไฟล์ไม่เกิน 2 MB )</p>
             </div>
             
           <div className="h-1/5 my-3">
