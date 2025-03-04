@@ -6,8 +6,9 @@ import { ResultCreditDashboardComponent } from "../components/ResultCreditDashbo
 import { SubjectGroupTableBodyComponent } from "../components/SubjectGroupTableBodyComponent";
 import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 import { ResultGradeDashboardComponent } from "../components/ResultGradeDashboardComponent";
-import { div } from "framer-motion/client";
-import { Button, Switch } from "@heroui/react";
+import { Button, Progress, Switch } from "@heroui/react";
+import { Alert } from "@heroui/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 type NotCourseObject = {
     courseName: string,
@@ -73,8 +74,36 @@ export default function Grade(){
     const [notice3, setNotice3] = useState("")
     const [isAccepted, setIsAccepted] = useState(false)
 
-    const handlePrint = () => {
-        console.log("Hello world")
+    const handlePrint = async () => {
+
+        try{
+            
+            const packet = {
+                fullname: `${firstname} ${lastname}`,
+                id: studentId,
+                gpa: data?.gpa,
+                totalCredit: data?.totalCredit,
+                result: data?.result
+            }
+    
+            console.log(packet)
+
+            const respone = await fetch(`${process.env.BACKEND_URL}/print`, {
+                method: 'POST',
+                body: JSON.stringify(packet),
+            })
+
+            if(!respone.ok){
+                throw new Error(`Respone status : ${respone.status}`)
+            }
+
+            console.log("Pass")
+
+        }catch(error){
+            console.error(error)
+        }
+
+
     }
 
     useEffect(()=>{
@@ -123,6 +152,21 @@ export default function Grade(){
 
     return (
         <main>
+            {/* <AnimatePresence>
+                {
+                    isErrorAlert &&
+                    <motion.div className="absolute top-14 w-full z-20" initial={{opacity: 0, y: 0, }} animate={{opacity:1, y: 10}} exit={{opacity:0, y:0}} transition={{duration:0.3, ease:"linear"}}>
+                        <Alert description={textAlert} title={"แจ้งเตือน"} variant={'solid'} color="warning" classNames={{title: "motion-safe:animate-bounce font-bold", base:"w-1/2 relative left-1/2 -translate-x-1/2"}}/>
+                    </motion.div>
+                }
+    
+                {
+                    pending &&
+                    <motion.div className="absolute top-0 w-full h-full bg-black/50 z-50" initial={{opacity: 0}} animate={{opacity:1}} exit={{opacity:0}}>
+                        <Progress isIndeterminate size="lg" className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2" label="Loading..." classNames={{track:"bg-green-500"}}/>
+                    </motion.div>
+                }
+            </AnimatePresence> */}
             {
                 data ? 
            <div className="dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl max-w-5xl mx-auto">
@@ -130,15 +174,15 @@ export default function Grade(){
             <hr className="w-4/5 mx-auto border-black dark:border-white"/>
             <div className="m-4 grid grid-cols-4 gap-2">
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">ชื่อ</span> : <input value={firstname} className="text-black w-32 rounded-lg px-3" onChange={e => setFirstname(e.target.value)}/>
+                    <span className="font-bold text-lg rounded-full p-1">ชื่อ</span> : <input value={firstname} className="text-black w-32 rounded-lg px-3" onChange={e => setFirstname(e.target.value)}/>
                     <div className="text-orange-400">{notice1}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">นามสกุล</span> : <input value={lastname} className="text-black w-32 rounded-lg px-3" onChange={e => setLastname(e.target.value)}/>
+                    <span className="font-bold text-lg rounded-full p-1">นามสกุล</span> : <input value={lastname} className="text-black w-32 rounded-lg px-3" onChange={e => setLastname(e.target.value)}/>
                     <div className="text-orange-400">{notice2}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} className="text-black w-32 rounded-lg px-3" onChange={e => setStudentId(e.target.value)}/>
+                    <span className="font-bold text-lg rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} className="text-black w-32 rounded-lg px-3" onChange={e => setStudentId(e.target.value)}/>
                     <div className="text-orange-400">{notice3}</div>
                 </div>
                 <div className="h-12 text-center">
@@ -168,8 +212,8 @@ export default function Grade(){
             }
             <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.Course} status={false}/>
             <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
-            <div className="text-center">
-                <Button onPress={handlePrint}>พิมพ์ใบรายงานคะแนน</Button>
+            <div className="text-center p-6">
+                <Button onPress={handlePrint} className="bg-green-600 text-white">พิมพ์ใบรายงานคะแนน</Button>
             </div>
            </div>
            :

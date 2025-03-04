@@ -7,7 +7,7 @@ export function TableShowGradeComponent({title, subGroupList, leastCredit, sumCr
         <div className="mx-5 my-5">
             <div className="flex justify-between items-center">
                 <h1 className="font-bold text-lg">{title ? title : "???"}</h1>
-                <p className=" text-lg bg-lime-500 rounded-full px-2">{ leastCredit ? `ไม่น้อยกว่า ${leastCredit} หน่วยกิต` : "?" }</p>
+                <p className=" text-lg underline rounded-full">{ leastCredit ? `ไม่น้อยกว่า ${leastCredit} หน่วยกิต` : "?" }</p>
                 <p className={`text-lg rounded-full px-2 bg-lime-300 ${status ? "dark:bg-lime-600 bg-lime-300" : "bg-orange-400 dark:bg-orange-600"}`}>{ sumCredit ? `จำนวนหน่วยกิตรวม ${sumCredit} หน่วยกิต` : "?" }</p>
             </div>
 
