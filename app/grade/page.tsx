@@ -73,6 +73,10 @@ export default function Grade(){
     const [notice3, setNotice3] = useState("")
     const [isAccepted, setIsAccepted] = useState(false)
 
+    const handlePrint = () => {
+        console.log("Hello world")
+    }
+
     useEffect(()=>{
         const getResultTranscript = async () => {
             const storedData = localStorage.getItem("data")
@@ -126,15 +130,15 @@ export default function Grade(){
             <hr className="w-4/5 mx-auto border-black dark:border-white"/>
             <div className="m-4 grid grid-cols-4 gap-2">
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">ชื่อ</span> : <input value={firstname} className="text-black w-32 rounded-lg" onChange={e => setFirstname(e.target.value)}/>
+                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">ชื่อ</span> : <input value={firstname} className="text-black w-32 rounded-lg px-3" onChange={e => setFirstname(e.target.value)}/>
                     <div className="text-orange-400">{notice1}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">นามสกุล</span> : <input value={lastname} className="text-black w-32 rounded-lg" onChange={e => setLastname(e.target.value)}/>
+                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">นามสกุล</span> : <input value={lastname} className="text-black w-32 rounded-lg px-3" onChange={e => setLastname(e.target.value)}/>
                     <div className="text-orange-400">{notice2}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} className="text-black w-32 rounded-lg" onChange={e => setStudentId(e.target.value)}/>
+                    <span className="font-bold text-lg bg-lime-200 dark:bg-lime-600 rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} className="text-black w-32 rounded-lg px-3" onChange={e => setStudentId(e.target.value)}/>
                     <div className="text-orange-400">{notice3}</div>
                 </div>
                 <div className="h-12 text-center">
@@ -164,8 +168,8 @@ export default function Grade(){
             }
             <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.Course} status={false}/>
             <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
-            <div>
-                <Button>พิมพ์ใบรายงานคะแนน</Button>
+            <div className="text-center">
+                <Button onPress={handlePrint}>พิมพ์ใบรายงานคะแนน</Button>
             </div>
            </div>
            :
