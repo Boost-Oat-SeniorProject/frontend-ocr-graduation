@@ -1,14 +1,13 @@
 'use client'
-import { useState, useRef, useEffect } from "react";
-import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
+import { useState, useEffect } from "react";
 import {TableShowGradeComponent} from "../components/TableShowGradeComponent"
 import { ResultCreditDashboardComponent } from "../components/ResultCreditDashboardComponent";
-import { SubjectGroupTableBodyComponent } from "../components/SubjectGroupTableBodyComponent";
 import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 import { ResultGradeDashboardComponent } from "../components/ResultGradeDashboardComponent";
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Progress, Select, SelectItem, Switch, Tooltip } from "@heroui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, NumberInput, Progress, Select, SelectItem, Switch, Tooltip } from "@heroui/react";
 import { Alert } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
 type NotCourseObject = {
     courseName: string,
@@ -62,27 +61,6 @@ type ReusltTranscriptObject ={
     gpa: number
 }
 
-const subjectGroups = [
-    {key:"1", label: "หมวดวิชาทั่วไป"},
-    {key:"2", label: "หมวดวิชาเฉพาะ"},
-    {key:"3", label: "หมวดวิชาเสรี"},
-]
-
-const subGroups1 = [
-    {key:"1", label: "กลุ่มสาระอยู่ดีมีสุข"},
-    {key:"2", label: "กลุ่มสาระศาสตร์แห่งผู้ประกอบการ"},
-    {key:"3", label: "กลุ่มสาระภาษากับการสื่อสาร"},
-    {key:"4", label: "กลุ่มสาระพลเมืองไทยและพลเมืองโลก"},
-    {key:"5", label: "กลุ่มสาระสุนทรียศาสตร์"},
-    {key:"6", label: "เลือกเรียนรายวิชาใน 5 กลุ่มสาระ"},
-]
-
-const subGroups2 = [
-    {key:"1", label:"วิชาแกน"},
-    {key:"2", label:"วิชาเฉพาะบังคับ"},
-    {key:"3", label:"เฉพาะเลือก"},
-]
-
 export default function Grade(){
     
     const [data, setData] = useState<ReusltTranscriptObject>()
@@ -129,6 +107,10 @@ export default function Grade(){
         }
 
         setPending(false)
+    }
+
+    const handleDeleteSubject = (course: NotCourseObject) =>{
+        console.log("Hello world")
     }
 
     const noticeAlert = (text:string) =>{
@@ -254,13 +236,13 @@ export default function Grade(){
                 data.notFoundCourses.Course.length > 0 &&
                 <div className="">
                     <h4 className="px-5 text-lg font-bold">วิชาที่ไม่มีในระบบ</h4>
-                    <div className="grid grid-cols-2">
+                    <div className="grid grid-cols-3">
                         {
                             data.notFoundCourses.Course.map((course:NotCourseObject)=>(
                                 <Card
                                     key={course.courseId}
                                     classNames={{
-                                        base:"text-sm dark:text-stone-300 text-stone-600 mx-4 my-5",
+                                        base:"text-sm dark:text-stone-300 text-stone-600 mx-4 my-5 border-4 border-gray-500",
                                         header: "dark:bg-[#033] text-lg bg-lime-400",
                                         body: "dark:bg-[#24493C] bg-green-300",
                                         footer: "dark:bg-[#033] bg-lime-400"
@@ -276,39 +258,8 @@ export default function Grade(){
                                         <p><span className="font-bold dark:text-white text-black text-lg">เกรด</span>: {course.grade}</p>
                                     </CardBody>
                                     <Divider />
-                                    <CardBody className="grid grid-cols-2 gap-3">
-                                        {/* หมวดวิชาหลัก */}
-                                        <Select
-                                            label="เลือกหมวดวิชา"
-                                            items={subjectGroups}
-                                            classNames={{
-                                                listbox:"text-black",
-                                                base:"text-white my-2",
-                                                label: "dark:text-black",
-                                                value: "dark:text-white text-black"
-                                            }}
-                                        >
-                                            {(subjectGroup) => <SelectItem>{subjectGroup.label}</SelectItem>}
-                                        </Select>
-                                        
-                                        {/* หมวดวิชาย่อย */}
-
-                                        <Select
-                                            label="เลือกหมวดวิชาย่อย"
-                                            items={subjectGroups}
-                                            classNames={{
-                                                listbox:"text-black",
-                                                base:"text-white my-2",
-                                                label: "dark:text-black",
-                                                value: "dark:text-white text-black"
-                                            }}
-                                        >
-                                            {(subjectGroup) => <SelectItem>{subjectGroup.label}</SelectItem>}
-                                        </Select>
-                                    </CardBody>
-                                    <Divider />
                                     <CardFooter>
-                                        <Button className="text-center">เพิ่มรายวิชา</Button>
+                                        <Link href={`/modify/${course.courseId}/${course.courseName}/${course.enrollmentDate}/${course.grade}`} className="bg-green-600 text-white px-6 py-2 rounded-full mx-auto hover:bg-white hover:text-black">แก้ไข</Link>
                                     </CardFooter>
                                 </Card>
                             ))    
