@@ -86,12 +86,24 @@ export default function Grade(){
 
             const respone = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/to_pdf`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(packet),
             })
 
             if(!respone.ok){
                 throw new Error(`Respone status : ${respone.status}`)
             }
+
+            const blob = await respone.blob()
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `ใบตรวจสอบหลักสูตร_${studentId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
 
             console.log("Pass")
 
