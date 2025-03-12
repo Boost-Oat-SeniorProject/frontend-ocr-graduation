@@ -9,7 +9,7 @@ export async function handleUpload(prevState:any, formdata:FormData) {
             throw new Error("กรุณาใส่ไฟล์ใบรายงานคะแนน")
         }
 
-        const result = await fetch(`${process.env.BACKEND_URL}/extract`, {
+        const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/extract`, {
             method: 'POST',
             body: formdata
         })

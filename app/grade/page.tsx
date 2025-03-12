@@ -1,13 +1,15 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {TableShowGradeComponent} from "../components/TableShowGradeComponent"
 import { ResultCreditDashboardComponent } from "../components/ResultCreditDashboardComponent";
 import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 import { ResultGradeDashboardComponent } from "../components/ResultGradeDashboardComponent";
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, NumberInput, Progress, Select, SelectItem, Switch, Tooltip } from "@heroui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, addToast, Progress, Switch, } from "@heroui/react";
 import { Alert } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import NoticeDashBoardComponent from "../components/NoticeDashBoardComponent";
 
 type CourseObject = {
     courseName: string,
@@ -68,12 +70,17 @@ export default function Grade(){
     const [isErrorAlert, setIsErrorAlert] = useState(false)
     const [pending, setPending] = useState(false)
     const [textAlert, setTextAlert] = useState("")
+    const rounter = useRouter()
+    const errorRef = useRef<HTMLDivElement>(null)
 
     const handlePrint = async () => {
         setPending(true)
 
         try{
-            
+            if(!isAccepted){
+                errorRef.current?.scrollIntoView({behavior: "smooth", block: "center"})
+                throw new Error("ยังไม่ได้กดปุ่มยืนยันข้อมูลนิสิต")
+            }
             const packet = {
                 thaiName: `${firstname} ${lastname}`,
                 studentId: studentId,
@@ -104,6 +111,13 @@ export default function Grade(){
             document.body.appendChild(a);
             a.click();
             a.remove();
+            addToast({
+                title: "พิมพ์ใบรายงานคะแนนสำเร็จ",
+                color: "success",
+                timeout: 5000,
+                variant: 'solid'
+            })
+            rounter.push("/")
 
             console.log("Pass")
 
@@ -190,22 +204,22 @@ export default function Grade(){
            <div className="dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl max-w-5xl mx-auto">
             <h1 className="text-xl font-bold text-center my-4">ผลลัพท์การตรวจสอบใบรายงานคะแนน</h1>
             <hr className="w-4/5 mx-auto border-black dark:border-white"/>
-            <div className="m-4 grid grid-cols-4 gap-2">
+            <div className="my-8 grid grid-cols-4 gap-2">
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg rounded-full p-1">ชื่อ</span> : <input value={firstname} className="text-black w-32 rounded-lg px-3" onChange={e => setFirstname(e.target.value)}/>
+                    <span className="font-bold text-lg rounded-full p-1">ชื่อ</span> : <input value={firstname} disabled={isAccepted} className="text-black w-36 rounded-lg px-3" onChange={e => setFirstname(e.target.value)}/>
                     <div className="text-orange-400">{notice1}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg rounded-full p-1">นามสกุล</span> : <input value={lastname} className="text-black w-32 rounded-lg px-3" onChange={e => setLastname(e.target.value)}/>
+                    <span className="font-bold text-lg rounded-full p-1">นามสกุล</span> : <input value={lastname} disabled={isAccepted} className="text-black w-36 rounded-lg px-3" onChange={e => setLastname(e.target.value)}/>
                     <div className="text-orange-400">{notice2}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <span className="font-bold text-lg rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} className="text-black w-32 rounded-lg px-3" onChange={e => setStudentId(e.target.value)}/>
+                    <span className="font-bold text-lg rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} disabled={isAccepted} className="text-black w-32 rounded-lg px-3" onChange={e => setStudentId(e.target.value)}/>
                     <div className="text-orange-400">{notice3}</div>
                 </div>
-                <div className="h-12 text-center">
+                <div className="h-12 text-center" ref={errorRef}>
                     <Switch 
-                        isDisabled={(firstname && lastname && studentId) ? false: true}
+                        isDisabled={notice1==="" && notice2==="" && notice3==="" ? false: true}
                         isSelected={isAccepted}
                         onValueChange={setIsAccepted}
                         color="success"
@@ -221,7 +235,12 @@ export default function Grade(){
                 <ResultCreditDashboardComponent title="หมวดวิชาเฉพาะ" leastCredit={data.result[1].leastCreditAmount} amountCredit={data.result[1].sumCreditAmount} status={data.result[1].status}/>
                 <ResultCreditDashboardComponent title="หมวดวิชาเลือกเสรี" leastCredit={data.result[2].leastCreditAmount} amountCredit={data.result[2].sumCreditAmount} status={data.result[2].status}/>
                 <ResultGraduateDashboard status={data.isGraduated}/>
-                <ResultGradeDashboardComponent gpa={data.gpa} message={data.message}/>
+                <ResultGradeDashboardComponent gpa={data.gpa} sumCreditAmount={data.totalCredit}/>
+                {
+                    data.notFoundCourses.Course.length ?
+                    <NoticeDashBoardComponent numCourse={data.notFoundCourses.Course.length}/>
+                    : <></>
+                }
             </div>
             <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
             {

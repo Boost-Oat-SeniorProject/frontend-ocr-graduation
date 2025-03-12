@@ -18,9 +18,6 @@ export default function Home() {
   const [textAlert, setTextAlert] = useState<string>("")
   const [state, formAction, pending] = useActionState(handleUpload, initState)
   const router = useRouter()
-  // const {theme, setTheme} = useTheme()
-
-  // setTheme("light")
 
   useEffect(()=>{
     if (state.isNotPass){
@@ -57,6 +54,7 @@ export default function Home() {
     setDragActive(false)
     const newFile = event.dataTransfer.files[0]
     if (newFile && newFile.type === "application/pdf"){
+      inputRef.current.files = event.dataTransfer.files
       setFile(newFile)
     }
   }
