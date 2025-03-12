@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Provider } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="text-center text-2xl p-5 font-bold">
-          เว็บไซต์ตรวจสอบใบจบการศึกษาภาควิชาวิทยาการคอมพิวเตอร์ <br />ณ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
-        </div>
-        {children}
+        <Provider>
+          <div className="text-center text-2xl p-5 font-bold">
+            เว็บไซต์ตรวจสอบใบจบการศึกษาภาควิชาวิทยาการคอมพิวเตอร์ <br />ณ มหาวิทยาลัยเกษตรศาสตร์ บางเขน
+          </div>
+          {children}
+        </Provider>
       </body>
     </html>
   );

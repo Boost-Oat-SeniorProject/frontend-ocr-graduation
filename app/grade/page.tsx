@@ -9,13 +9,6 @@ import { Alert } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
-type NotCourseObject = {
-    courseName: string,
-    courseId: string,
-    grade: string,
-    enrollmentDate: string
-}
-
 type CourseObject = {
     courseName: string,
     courseId: string,
@@ -44,7 +37,7 @@ type GroupObject = {
 
 type ReusltTranscriptObject ={
     studentId: string,
-    thatName: string,
+    thaiName: string,
     englishName: {
         fullname:string,
         lastname:string
@@ -55,7 +48,7 @@ type ReusltTranscriptObject ={
     totalCredit: number,
     notFoundCourses: {
         GroupNameTh: string,
-        Course: Array<NotCourseObject>
+        Course: Array<CourseObject>
     },
     isGraduated: boolean,
     gpa: number
@@ -82,8 +75,8 @@ export default function Grade(){
         try{
             
             const packet = {
-                fullname: `${firstname} ${lastname}`,
-                id: studentId,
+                thaiName: `${firstname} ${lastname}`,
+                studentId: studentId,
                 gpa: data?.gpa,
                 totalCredit: data?.totalCredit,
                 result: data?.result
@@ -91,7 +84,7 @@ export default function Grade(){
     
             console.log(packet)
 
-            const respone = await fetch(`${process.env.BACKEND_URL}/print`, {
+            const respone = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/to_pdf`, {
                 method: 'POST',
                 body: JSON.stringify(packet),
             })
@@ -107,10 +100,6 @@ export default function Grade(){
         }
 
         setPending(false)
-    }
-
-    const handleDeleteSubject = (course: NotCourseObject) =>{
-        console.log("Hello world")
     }
 
     const noticeAlert = (text:string) =>{
@@ -138,8 +127,8 @@ export default function Grade(){
     useEffect(()=>{
         const setResultTranscript = async () => {
             if(data != null){
-                setFirstname(data.englishName.fullname)
-                setLastname(data.englishName.lastname)
+                setFirstname(data.thaiName.split(" ")[0])
+                setLastname(data.thaiName.split(" ")[1] || "")
                 setStudentId(data.studentId)
             }
         }
@@ -238,7 +227,7 @@ export default function Grade(){
                     <h4 className="px-5 text-lg font-bold">วิชาที่ไม่มีในระบบ</h4>
                     <div className="grid grid-cols-3">
                         {
-                            data.notFoundCourses.Course.map((course:NotCourseObject)=>(
+                            data.notFoundCourses.Course.map((course:CourseObject)=>(
                                 <Card
                                     key={course.courseId}
                                     classNames={{
@@ -255,11 +244,12 @@ export default function Grade(){
                                     <CardBody>
                                         <p><span className="font-bold dark:text-white text-black text-lg">ชื่อวิชา</span>: {course.courseName}</p>
                                         <p><span className="font-bold dark:text-white text-black text-lg">ภาคเรียน</span>: {course.enrollmentDate}</p>
+                                        <p><span className="font-bold dark:text-white text-black text-lg">หน่วนกิต</span>: {course.creditAmount}</p>
                                         <p><span className="font-bold dark:text-white text-black text-lg">เกรด</span>: {course.grade}</p>
                                     </CardBody>
                                     <Divider />
                                     <CardFooter>
-                                        <Link href={`/modify/${course.courseId}/${course.courseName}/${course.enrollmentDate}/${course.grade}`} className="bg-green-600 text-white px-6 py-2 rounded-full mx-auto hover:bg-white hover:text-black">แก้ไข</Link>
+                                        <Link href={`/modify/${course.courseId}/${course.courseName}/${course.enrollmentDate.replace("/","_")}/${course.grade}/${course.creditAmount}`} className="bg-green-600 text-white px-6 py-2 rounded-full mx-auto hover:bg-white hover:text-black">แก้ไข</Link>
                                     </CardFooter>
                                 </Card>
                             ))    
@@ -273,7 +263,7 @@ export default function Grade(){
             </div>
            </div>
            :
-           <div></div>
+           <div>Loading...</div>
             }
 
         </main>

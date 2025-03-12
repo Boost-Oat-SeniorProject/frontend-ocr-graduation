@@ -2,6 +2,7 @@
 
 export async function handleUpload(prevState:any, formdata:FormData) {
     const file = formdata.get("file")
+    console.log(file)
     
     try{
         if (file instanceof File && file?.name === 'undefined'){
