@@ -4,7 +4,6 @@ import { Tooltip, Alert, Progress } from "@heroui/react";
 import {AnimatePresence, motion} from "framer-motion"
 import { handleUpload } from "./actions";
 import { useRouter } from "next/navigation";
-// import { useTheme } from "next-themes";
 
 export default function Home() {
   const initState ={

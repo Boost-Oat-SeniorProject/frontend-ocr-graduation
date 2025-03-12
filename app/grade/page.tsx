@@ -1,21 +1,13 @@
 'use client'
-import { useState, useRef, useEffect } from "react";
-import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
+import { useState, useEffect } from "react";
 import {TableShowGradeComponent} from "../components/TableShowGradeComponent"
 import { ResultCreditDashboardComponent } from "../components/ResultCreditDashboardComponent";
-import { SubjectGroupTableBodyComponent } from "../components/SubjectGroupTableBodyComponent";
 import { ResultGraduateDashboard } from "../components/ResultGraduateDashboard";
 import { ResultGradeDashboardComponent } from "../components/ResultGradeDashboardComponent";
-import { Button, Progress, Switch } from "@heroui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, NumberInput, Progress, Select, SelectItem, Switch, Tooltip } from "@heroui/react";
 import { Alert } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
-
-type NotCourseObject = {
-    courseName: string,
-    courseId: string,
-    grade: string,
-    enrollmentDate: string
-}
+import Link from "next/link";
 
 type CourseObject = {
     courseName: string,
@@ -45,7 +37,7 @@ type GroupObject = {
 
 type ReusltTranscriptObject ={
     studentId: string,
-    thatName: string,
+    thaiName: string,
     englishName: {
         fullname:string,
         lastname:string
@@ -56,7 +48,7 @@ type ReusltTranscriptObject ={
     totalCredit: number,
     notFoundCourses: {
         GroupNameTh: string,
-        Course: Array<NotCourseObject>
+        Course: Array<CourseObject>
     },
     isGraduated: boolean,
     gpa: number
@@ -73,14 +65,18 @@ export default function Grade(){
     const [notice2, setNotice2] = useState("")
     const [notice3, setNotice3] = useState("")
     const [isAccepted, setIsAccepted] = useState(false)
+    const [isErrorAlert, setIsErrorAlert] = useState(false)
+    const [pending, setPending] = useState(false)
+    const [textAlert, setTextAlert] = useState("")
 
     const handlePrint = async () => {
+        setPending(true)
 
         try{
             
             const packet = {
-                fullname: `${firstname} ${lastname}`,
-                id: studentId,
+                thaiName: `${firstname} ${lastname}`,
+                studentId: studentId,
                 gpa: data?.gpa,
                 totalCredit: data?.totalCredit,
                 result: data?.result
@@ -88,7 +84,7 @@ export default function Grade(){
     
             console.log(packet)
 
-            const respone = await fetch(`${process.env.BACKEND_URL}/print`, {
+            const respone = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/to_pdf`, {
                 method: 'POST',
                 body: JSON.stringify(packet),
             })
@@ -99,17 +95,27 @@ export default function Grade(){
 
             console.log("Pass")
 
-        }catch(error){
-            console.error(error)
+        }catch(error:any){
+            noticeAlert(error.message)
         }
 
+        setPending(false)
+    }
 
+    const noticeAlert = (text:string) =>{
+        setIsErrorAlert(true)
+        setTextAlert(text)
+        setTimeout(() => {
+            setIsErrorAlert(false)
+            setTextAlert("")
+          }, 3000);
     }
 
     useEffect(()=>{
         const getResultTranscript = async () => {
             const storedData = localStorage.getItem("data")
             const result = storedData ? JSON.parse(storedData) : {}
+            console.log(result)
             if (result != null){
                 setData(result)
             }
@@ -121,8 +127,8 @@ export default function Grade(){
     useEffect(()=>{
         const setResultTranscript = async () => {
             if(data != null){
-                setFirstname(data.englishName.fullname)
-                setLastname(data.englishName.lastname)
+                setFirstname(data.thaiName.split(" ")[0])
+                setLastname(data.thaiName.split(" ")[1] || "")
                 setStudentId(data.studentId)
             }
         }
@@ -152,21 +158,21 @@ export default function Grade(){
 
     return (
         <main>
-            {/* <AnimatePresence>
+            <AnimatePresence>
                 {
                     isErrorAlert &&
-                    <motion.div className="absolute top-14 w-full z-20" initial={{opacity: 0, y: 0, }} animate={{opacity:1, y: 10}} exit={{opacity:0, y:0}} transition={{duration:0.3, ease:"linear"}}>
+                    <motion.div className="fixed top-14 w-full z-20" initial={{opacity: 0, y: 0, }} animate={{opacity:1, y: 10}} exit={{opacity:0, y:0}} transition={{duration:0.3, ease:"linear"}}>
                         <Alert description={textAlert} title={"แจ้งเตือน"} variant={'solid'} color="warning" classNames={{title: "motion-safe:animate-bounce font-bold", base:"w-1/2 relative left-1/2 -translate-x-1/2"}}/>
                     </motion.div>
                 }
     
                 {
                     pending &&
-                    <motion.div className="absolute top-0 w-full h-full bg-black/50 z-50" initial={{opacity: 0}} animate={{opacity:1}} exit={{opacity:0}}>
+                    <motion.div className="fixed top-0 w-full h-full bg-black/50 z-50" initial={{opacity: 0}} animate={{opacity:1}} exit={{opacity:0}}>
                         <Progress isIndeterminate size="lg" className="relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2" label="Loading..." classNames={{track:"bg-green-500"}}/>
                     </motion.div>
                 }
-            </AnimatePresence> */}
+            </AnimatePresence>
             {
                 data ? 
            <div className="dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border shadow-lg shadow-[#585F54] dark:shadow-[#969696] rounded-2xl max-w-5xl mx-auto">
@@ -187,6 +193,7 @@ export default function Grade(){
                 </div>
                 <div className="h-12 text-center">
                     <Switch 
+                        isDisabled={(firstname && lastname && studentId) ? false: true}
                         isSelected={isAccepted}
                         onValueChange={setIsAccepted}
                         color="success"
@@ -210,14 +217,53 @@ export default function Grade(){
                     <TableShowGradeComponent key={result.groupName} title={result.groupNameTh} subGroupList={result.subGroups} leastCredit={result.leastCreditAmount} sumCredit={result.sumCreditAmount} status={result.status}/>
                 ))
             }
-            <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.Course} status={false}/>
-            <hr className="w-4/5 mx-auto my-6 border-black dark:border-white"/>
+            {/* <SubjectGroupTableBodyComponent subtitle={data.notFoundCourses.GroupNameTh} courses={data.notFoundCourses.Course} status={false}/> */}
+            
+
+            {/* Subjects which doesn't exist in database */}
+            {
+                data.notFoundCourses.Course.length > 0 &&
+                <div className="">
+                    <h4 className="px-5 text-lg font-bold">วิชาที่ไม่มีในระบบ</h4>
+                    <div className="grid grid-cols-3">
+                        {
+                            data.notFoundCourses.Course.map((course:CourseObject)=>(
+                                <Card
+                                    key={course.courseId}
+                                    classNames={{
+                                        base:"text-sm dark:text-stone-300 text-stone-600 mx-4 my-5 border-4 border-gray-500",
+                                        header: "dark:bg-[#033] text-lg bg-lime-400",
+                                        body: "dark:bg-[#24493C] bg-green-300",
+                                        footer: "dark:bg-[#033] bg-lime-400"
+                                    }}
+                                >
+                                    <CardHeader>
+                                        <span className="font-bold dark:text-white text-black">รหัสวิชา</span> : {course.courseId}
+                                    </CardHeader>
+                                    <Divider />
+                                    <CardBody>
+                                        <p><span className="font-bold dark:text-white text-black text-lg">ชื่อวิชา</span>: {course.courseName}</p>
+                                        <p><span className="font-bold dark:text-white text-black text-lg">ภาคเรียน</span>: {course.enrollmentDate}</p>
+                                        <p><span className="font-bold dark:text-white text-black text-lg">หน่วนกิต</span>: {course.creditAmount}</p>
+                                        <p><span className="font-bold dark:text-white text-black text-lg">เกรด</span>: {course.grade}</p>
+                                    </CardBody>
+                                    <Divider />
+                                    <CardFooter>
+                                        <Link href={`/modify/${course.courseId}/${course.courseName}/${course.enrollmentDate.replace("/","_")}/${course.grade}/${course.creditAmount}`} className="bg-green-600 text-white px-6 py-2 rounded-full mx-auto hover:bg-white hover:text-black">แก้ไข</Link>
+                                    </CardFooter>
+                                </Card>
+                            ))    
+                        }
+                    </div>
+                </div>
+            }
+
             <div className="text-center p-6">
                 <Button onPress={handlePrint} className="bg-green-600 text-white">พิมพ์ใบรายงานคะแนน</Button>
             </div>
            </div>
            :
-           <div></div>
+           <div>Loading...</div>
             }
 
         </main>
