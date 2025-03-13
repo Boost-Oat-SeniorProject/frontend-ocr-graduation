@@ -9,6 +9,8 @@ export async function handleUpload(prevState:any, formdata:FormData) {
             throw new Error("กรุณาใส่ไฟล์ใบรายงานคะแนน")
         }
 
+        console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/extract`)
+
         const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/extract`, {
             method: 'POST',
             body: formdata
@@ -23,6 +25,7 @@ export async function handleUpload(prevState:any, formdata:FormData) {
         return {message: "", isNotPass: false, result: data}
 
     }catch(err:any){
+        console.log(err)
         if (err.message === "fetch failed"){
             return {message: "ส่งไฟล์ไม่สำเร็จ", isNotPass: true, result:null}
         }
