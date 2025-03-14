@@ -116,7 +116,7 @@ export default function ModifyPage(){
                 courseName: editPath(params.name),
                 courseId: params.id,
                 creditAmount: Number(params.creditAmount),
-                grade: params.grade,
+                grade: params.grade.replace("%2B", "+"),
                 enrollmentDate: params.enroll.replace("_", "/")
             }
             
@@ -145,10 +145,11 @@ export default function ModifyPage(){
             subGroup.sumCreditAmount += newCourse.creditAmount
             if (subGroup.leastCreditAmount <= subGroup.sumCreditAmount){
                 subGroup.status = true
-                transcript.result[Number(groupName)-1].sumCreditAmount += newCourse.creditAmount
-                if (transcript.result[Number(groupName)-1].sumCreditAmount >= transcript.result[Number(groupName)-1].leastCreditAmount){
-                    transcript.result[Number(groupName)-1].status = true
-                }
+            }
+
+            transcript.result[Number(groupName)-1].sumCreditAmount += newCourse.creditAmount
+            if (transcript.result[Number(groupName)-1].sumCreditAmount >= transcript.result[Number(groupName)-1].leastCreditAmount){
+                transcript.result[Number(groupName)-1].status = true
             }
 
             if(transcript.result[0].status && transcript.result[1].status && transcript.result[2].status){
@@ -203,7 +204,7 @@ export default function ModifyPage(){
                     <p><span className="font-bold dark:text-white text-black text-lg">ชื่อวิชา</span>: {editPath(params.name)}</p>
                     <p><span className="font-bold dark:text-white text-black text-lg">ภาคเรียน</span>: {params.enroll}</p>
                     <p><span className="font-bold dark:text-white text-black text-lg">หน่วยกิต</span>: {params.creditAmount}</p>
-                    <p><span className="font-bold dark:text-white text-black text-lg">เกรด</span>: {params.grade}</p>
+                    <p><span className="font-bold dark:text-white text-black text-lg">เกรด</span>: {params.grade.replace("%2B", "+")}</p>
                 </CardBody>
                 <Divider />
                 <CardBody className="grid grid-cols-2 gap-3">
