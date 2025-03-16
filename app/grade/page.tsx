@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import NoticeDashBoardComponent from "../components/NoticeDashBoardComponent";
+import { getEnv } from "./env";
 
 type CourseObject = {
     courseName: string,
@@ -56,6 +57,10 @@ type ReusltTranscriptObject ={
     gpa: number
 }
 
+type EnvType = {
+    BACKEND_URL: string
+}
+
 export default function Grade(){
     
     const [data, setData] = useState<ReusltTranscriptObject>()
@@ -72,6 +77,13 @@ export default function Grade(){
     const [textAlert, setTextAlert] = useState("")
     const rounter = useRouter()
     const errorRef = useRef<HTMLDivElement>(null)
+    const [env, setEnv] = useState<EnvType>({BACKEND_URL: ""})
+
+    useEffect(()=>{
+        getEnv().then((env:any)=>{
+            setEnv(env)
+        })
+    }, [])
 
     const handlePrint = async () => {
         setPending(true)
@@ -90,8 +102,9 @@ export default function Grade(){
             }
     
             console.log(packet)
+            console.log(`${env.BACKEND_URL}/to_pdf`)
 
-            const respone = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/to_pdf`, {
+            const respone = await fetch(`${env.BACKEND_URL}/to_pdf`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
