@@ -187,7 +187,7 @@ export default function ModifyPage(){
             </AnimatePresence>
             <Card
                 classNames={{
-                    base:"max-w-[500px] mx-auto dark:bg-[#003333] bg-[#99FFFF] border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] dark:text-stone-300 text-stone-600",
+                    base:"max-w-[600px] mx-auto dark:bg-[#003333] bg-[#99FFFF] border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] dark:text-stone-300 text-stone-600",
                     header: "dark:bg-[#033] text-lg bg-lime-400",
                     body: "dark:bg-[#24493C] bg-green-300",
                     footer: "dark:bg-[#033] bg-white"
@@ -228,7 +228,7 @@ export default function ModifyPage(){
                         isRequired
                         classNames={{
                             trigger:"dark:bg-gray-400",
-                            listbox:"dark:bg-gray-400 dark:text-white text-black",
+                            listbox:"dark:bg-gray-400 text-black",
                             label:"text-black",
                             errorMessage:"bg-orange-600 text-white text-center rounded-full"
                         }}

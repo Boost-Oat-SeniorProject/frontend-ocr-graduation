@@ -117,6 +117,7 @@ export default function Grade(){
                 variant: 'solid'
             })
             rounter.push("/")
+            localStorage.removeItem("data")
 
         }catch(error:any){
             console.error(error)
@@ -231,7 +232,7 @@ export default function Grade(){
                 <ResultCreditDashboardComponent title="หมวดวิชาศึกษาทั่วไป" leastCredit={data.result[0].leastCreditAmount} amountCredit={data.result[0].sumCreditAmount} status={data.result[0].status}/>
                 <ResultCreditDashboardComponent title="หมวดวิชาเฉพาะ" leastCredit={data.result[1].leastCreditAmount} amountCredit={data.result[1].sumCreditAmount} status={data.result[1].status}/>
                 <ResultCreditDashboardComponent title="หมวดวิชาเลือกเสรี" leastCredit={data.result[2].leastCreditAmount} amountCredit={data.result[2].sumCreditAmount} status={data.result[2].status}/>
-                <ResultGraduateDashboard status={data.isGraduated}/>
+                <ResultGraduateDashboard status={data.isGraduated} message={data.message}/>
                 <ResultGradeDashboardComponent gpa={data.gpa} sumCreditAmount={data.totalCredit}/>
                 {
                     data.notFoundCourses.Course.length ?
