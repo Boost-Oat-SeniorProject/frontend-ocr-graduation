@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 export default function Custom404() {
   const path = usePathname()
-  console.log(path)
     return (
       <main>
         <Card classNames={{

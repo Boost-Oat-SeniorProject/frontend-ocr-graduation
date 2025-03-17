@@ -2,7 +2,6 @@
 
 export async function handleUpload(prevState:any, formdata:FormData) {
     const file = formdata.get("file")
-    console.log(file)
     
     try{
         if (file instanceof File && file?.name === 'undefined'){
@@ -23,11 +22,10 @@ export async function handleUpload(prevState:any, formdata:FormData) {
         return {message: "", isNotPass: false, result: data}
 
     }catch(err:any){
-        console.log(err)
+        console.error(err)
         if (err.message === "fetch failed"){
             return {message: "ส่งไฟล์ไม่สำเร็จ", isNotPass: true, result:null}
         }
-        console.log(err)
         return {message: err.message, isNotPass: true, result:null}
     }
 }

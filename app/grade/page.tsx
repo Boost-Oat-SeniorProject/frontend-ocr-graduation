@@ -101,23 +101,6 @@ export default function Grade(){
                 totalCredit: data?.totalCredit,
                 result: data?.result
             }
-    
-            console.log(packet)
-            console.log(`${env.BACKEND_URL}/to_pdf`)
-
-            // const respone = await fetch(`${env.BACKEND_URL}/to_pdf`, {
-            //     method: 'POST',
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(packet),
-            // })
-
-            // if(!respone.ok){
-            //     throw new Error(`Respone status : ${respone.status}`)
-            // }
-
-            // const blob = await respone.blob()
 
             const blob = await fetch_pdf(env.BACKEND_URL+"/to_pdf", "POST", JSON.stringify(packet))
             const url = window.URL.createObjectURL(blob)
@@ -134,8 +117,6 @@ export default function Grade(){
                 variant: 'solid'
             })
             rounter.push("/")
-
-            console.log("Pass")
 
         }catch(error:any){
             console.error(error)
@@ -158,7 +139,6 @@ export default function Grade(){
         const getResultTranscript = async () => {
             const storedData = localStorage.getItem("data")
             const result = storedData ? JSON.parse(storedData) : {}
-            console.log(result)
             if (result != null){
                 setData(result)
             }

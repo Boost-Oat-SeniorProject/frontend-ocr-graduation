@@ -119,13 +119,10 @@ export default function ModifyPage(){
                 grade: params.grade.replace("%2B", "+"),
                 enrollmentDate: params.enroll.replace("_", "/")
             }
-            
-            console.log(newCourse)
 
             // get data from localStorange
             const storedData = localStorage.getItem("data")
             const transcript:ReusltTranscriptObject= storedData ? JSON.parse(storedData) : {}
-            console.log(transcript)
 
             // append subject in array
             let subGroup = null
