@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import NoticeDashBoardComponent from "../components/NoticeDashBoardComponent";
 import { getEnv } from "./env";
+import { fetch_pdf } from "./action";
 
 type CourseObject = {
     courseName: string,
@@ -104,19 +105,21 @@ export default function Grade(){
             console.log(packet)
             console.log(`${env.BACKEND_URL}/to_pdf`)
 
-            const respone = await fetch(`${env.BACKEND_URL}/to_pdf`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(packet),
-            })
+            // const respone = await fetch(`${env.BACKEND_URL}/to_pdf`, {
+            //     method: 'POST',
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify(packet),
+            // })
 
-            if(!respone.ok){
-                throw new Error(`Respone status : ${respone.status}`)
-            }
+            // if(!respone.ok){
+            //     throw new Error(`Respone status : ${respone.status}`)
+            // }
 
-            const blob = await respone.blob()
+            // const blob = await respone.blob()
+
+            const blob = await fetch_pdf(env.BACKEND_URL+"/to_pdf", "POST", JSON.stringify(packet))
             const url = window.URL.createObjectURL(blob)
             const a = document.createElement("a");
             a.href = url;
@@ -135,6 +138,7 @@ export default function Grade(){
             console.log("Pass")
 
         }catch(error:any){
+            console.error(error)
             noticeAlert(error.message)
         }
 
