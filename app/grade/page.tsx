@@ -288,7 +288,7 @@ export default function Grade(){
             }
 
             <div className="text-center p-6">
-                <Button onPress={handlePrint} className="bg-green-600 text-white">พิมพ์ใบรายงานคะแนน</Button>
+                <Button onPress={handlePrint} className="bg-green-600 text-white">พิมพ์ใบแบบตรวจสอบหลักสูตร</Button>
             </div>
            </div>
            :

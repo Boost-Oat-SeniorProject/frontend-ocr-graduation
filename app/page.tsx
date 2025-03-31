@@ -4,6 +4,7 @@ import { Tooltip, Alert, Progress } from "@heroui/react";
 import {AnimatePresence, motion} from "framer-motion"
 import { handleUpload } from "./actions";
 import { useRouter } from "next/navigation";
+import HelpComponent from "./components/HelpComponent";
 
 export default function Home() {
   const initState ={
@@ -161,9 +162,7 @@ export default function Home() {
               <Tooltip content="อ่านใบรายงานคะแนนนิสิต" color="success">
                   <button type="submit" disabled={pending || !file} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">ตรวจสอบ</button>          
               </Tooltip>
-              {/* <Tooltip content="ล้างไฟล์ใบรายงานคะแนนทั้งหมด" color="danger">
-                  <button className="bg-red-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-red-500 hover:ease-out duration-300 hover:ring hover:ring-red-500 focus:ring-offset-2 text-white">ล้างไฟล์</button>
-              </Tooltip> */}
+              <HelpComponent />
             </div>
           </form>
         </div>
