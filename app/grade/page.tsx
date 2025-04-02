@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import NoticeDashBoardComponent from "../components/NoticeDashBoardComponent";
 import { getEnv } from "./env";
-import { fetch_pdf } from "./action";
+import { fetch_pdf, updateInfor} from "./action";
 
 type CourseObject = {
     courseName: string,
@@ -62,6 +62,20 @@ type EnvType = {
     BACKEND_URL: string
 }
 
+type Infor = {
+    oldInfor: {
+        firstname: string,
+        lastname: string,
+        studentId: string
+    },
+
+    newInfor: {
+        firstname: string,
+        lastname: string,
+        studentId: string
+    }
+}
+
 export default function Grade(){
     
     const [data, setData] = useState<ReusltTranscriptObject>()
@@ -79,6 +93,7 @@ export default function Grade(){
     const rounter = useRouter()
     const errorRef = useRef<HTMLDivElement>(null)
     const [env, setEnv] = useState<EnvType>({BACKEND_URL: ""})
+    const [isDisabled, setDisabled] = useState<boolean>(true)
 
     useEffect(()=>{
         getEnv().then((env:any)=>{
@@ -91,7 +106,7 @@ export default function Grade(){
 
         try{
             if(!isAccepted){
-                errorRef.current?.scrollIntoView({behavior: "smooth", block: "center"})
+                errorRef.current?.focus()
                 throw new Error("ยังไม่ได้กดปุ่มยืนยันข้อมูลนิสิต")
             }
             const packet = {
@@ -136,6 +151,38 @@ export default function Grade(){
           }, 3000);
     }
 
+    const handleUpdateInfor = async () =>{
+        setPending(true)
+        const infor:Infor = {
+            oldInfor: {
+                firstname: data?.thaiName.split(" ")[0] || "",
+                lastname: data?.thaiName.split(" ")[1] || "",
+                studentId: data?.studentId || ""
+            },
+
+            newInfor: {
+                firstname: firstname,
+                lastname: lastname,
+                studentId: studentId
+            }
+        }
+        
+        const respone = await updateInfor(infor)
+        if(respone.status){
+            const newInfor = {...data, thaiName: `${infor.newInfor.firstname} ${infor.newInfor.lastname}`}
+            localStorage.setItem("data", JSON.stringify(newInfor))
+            addToast({
+                title: respone.message,
+                color: "success",
+                timeout: 5000,
+                variant: 'solid'
+            })
+        }else{
+            noticeAlert(respone.message)
+        }
+        setPending(false)
+    }
+
     useEffect(()=>{
         const getResultTranscript = async () => {
             const storedData = localStorage.getItem("data")
@@ -152,7 +199,7 @@ export default function Grade(){
         const setResultTranscript = async () => {
             if(data != null){
                 setFirstname(data.thaiName.split(" ")[0])
-                setLastname(data.thaiName.split(" ")[1] || "")
+                setLastname(data.thaiName.split(" ")[1])
                 setStudentId(data.studentId)
             }
         }
@@ -161,22 +208,43 @@ export default function Grade(){
     }, [data])
 
     useEffect(()=>{
-        if (!firstname.match(/[\u0E00-\u0E7F' ]/)){
+        if (!firstname.match(/^[\u0E00-\u0E7F']+$/)){
             setNotice1("*กรุณาเขียนขื่อภาษาไทย")
         }else{
             setNotice1("")
         }
 
-        if (!lastname.match(/[\u0E00-\u0E7F' ]/)){
+        if (!lastname.match(/^[\u0E00-\u0E7F']+$/)){
             setNotice2("*กรุณาเขียนนามสกุลภาษาไทย")
         }else{
             setNotice2("")
         }
 
-        if (!studentId.match(/[^\u0E00-\u0E7Fa-zA-Z' ]|^'|'$|''*/)){
+        if (!studentId.match(/^[0-9]+$/)){
             setNotice3("*กรุณาเขียนรหัสนิสิต")
         }else{
             setNotice3("")
+        }
+
+        console.log({
+            oldInfor: {
+                firstname: data?.thaiName.split(" ")[0],
+                lastname: data?.thaiName.split(" ")[1],
+                studentId: data?.studentId
+            },
+
+            newInfor: {
+                firstname: firstname,
+                lastname: lastname,
+                studentId: studentId
+            }
+        })
+
+        if (firstname != data?.thaiName.split(" ")[0] || lastname != data?.thaiName.split(" ")[1] || studentId != data?.studentId){
+            console.log(firstname != data?.thaiName.split(" ")[0])
+            console.log(lastname != data?.thaiName.split(" ")[1])
+            console.log(studentId != data?.studentId)
+            setDisabled(false)
         }
     }, [firstname, lastname, studentId])
 
@@ -215,16 +283,8 @@ export default function Grade(){
                     <span className="font-bold text-lg rounded-full p-1">รหัสนิสิต</span> : <input value={studentId} disabled={isAccepted} className="text-black w-32 rounded-lg px-3" onChange={e => setStudentId(e.target.value)}/>
                     <div className="text-orange-400">{notice3}</div>
                 </div>
-                <div className="h-12 text-center" ref={errorRef}>
-                    <Switch 
-                        isDisabled={notice1==="" && notice2==="" && notice3==="" ? false: true}
-                        isSelected={isAccepted}
-                        onValueChange={setIsAccepted}
-                        color="success"
-                        classNames={{label: "dark:text-white text-black", wrapper:"bg-gray-400"}}
-                    >
-                        ยืนยันข้อมูลนิสิต
-                    </Switch>
+                <div className="h-12 text-center">
+                    <Button onPress={handleUpdateInfor} isDisabled={isDisabled} color="success">แก้ไขข้อมูลนิสิต</Button>
                 </div>
             </div>
             <hr className="w-4/5 mx-auto border-black dark:border-white"/>
@@ -287,7 +347,17 @@ export default function Grade(){
                 </div>
             }
 
-            <div className="text-center p-6">
+
+            <div className="py-6 flex justify-center flex-row gap-10">
+                <Switch 
+                    isDisabled={notice1==="" && notice2==="" && notice3==="" ? false: true}
+                    isSelected={isAccepted}
+                    onValueChange={setIsAccepted}
+                    color="success"
+                    classNames={{label: "dark:text-white text-black", wrapper:"bg-gray-400", base:"my-2"}}
+                >
+                    ยืนยันข้อมูลและรายวิชาของนิสิต
+                </Switch>
                 <Button onPress={handlePrint} className="bg-green-600 text-white">พิมพ์ใบแบบตรวจสอบหลักสูตร</Button>
             </div>
            </div>
