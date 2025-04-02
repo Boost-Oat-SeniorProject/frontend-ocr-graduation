@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardBody, CardFooter, CardHeader, Divider, NumberInput, Select, SelectItem, Button, Alert, Progress } from "@heroui/react"
+import { Card, CardBody, CardFooter, CardHeader, Divider, NumberInput, Select, SelectItem, Button, Alert, Progress, addToast } from "@heroui/react"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
@@ -157,6 +157,14 @@ export default function ModifyPage(){
             transcript.notFoundCourses.Course = transcript.notFoundCourses.Course.filter(course=>course.courseId!==newCourse.courseId && course.courseName!==newCourse.courseName)
 
             localStorage.setItem("data", JSON.stringify(transcript))
+
+            addToast({
+                title: `เพิ่มรายวิชา ${newCourse.courseId} ${newCourse.courseName} สำเร็จ`,
+                color: "success",
+                timeout: 5000,
+                variant: 'solid'
+            })
+            
             router.push("/grade")
 
             
