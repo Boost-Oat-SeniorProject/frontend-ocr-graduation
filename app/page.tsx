@@ -2,39 +2,22 @@
 import { useState, DragEvent, SyntheticEvent, useRef, use, ChangeEvent, useActionState, useEffect} from "react";
 import { Tooltip, Alert, Progress } from "@heroui/react";
 import {AnimatePresence, motion} from "framer-motion"
-// import { handleUpload } from "./actions";
+import { fetchUpload } from "./actions";
 import { useRouter } from "next/navigation";
 import HelpComponent from "./components/HelpComponent";
 
 export default function Home() {
-  // const initState ={
-  //   message: "",
-  //   isNotPass: false,
-  //   result: null, // result of fetch pass
-  // }
   const [file, setFile] = useState<File | null>()
   const [dragActive, setDragActive] = useState<boolean>(false)
   const inputRef = useRef<any>(null)
   const [isErrorAlert, setErrorAlert] = useState<Boolean>(false)
   const [textAlert, setTextAlert] = useState<string>("")
-  // const [state, formAction, pending] = useActionState(handleUpload, initState)
   const [pending, setPending] = useState<boolean>(false)
   const router = useRouter()
 
-  // useEffect(()=>{
-  //   if (state.isNotPass){
-  //     noticeUploadfile(state.message)
-  //   }else{
-  //     if (state.result !== null){
-  //       localStorage.setItem("data", JSON.stringify(state.result))
-  //       router.push("/grade")
-  //     }
-  //   }
-  //   setFile(null)
-  // }, [state])
 
   async function handleUpload(){
-    await setPending(true)
+    setPending(true)
     try{
       if(!file){
         throw new Error("กรุณาใส่ไฟล์ใบรายงานคะแนน")
@@ -42,24 +25,16 @@ export default function Home() {
       const formdata = new FormData()
       formdata.set('file', file)
 
-      const respone = await fetch (`${process.env.NEXT_PUBLIC_BACKEND_URL}/extract`,{
-        method: 'POST',
-        body: formdata,
-      })
+      const respone = await fetchUpload(formdata)
 
-      if (!respone.ok){
-        throw new Error(`${respone.status}`)
-      }
-
-      console.log("pass")
-      const data = await respone.json()
-      console.log(data)
-      localStorage.setItem("data", data)
-      
+      console.log(respone.result)
+      localStorage.setItem("data", JSON.stringify(respone.result))
+      setPending(false)
+      router.push("/grade")
     }catch(error:any){
       noticeUploadfile(error.message)
     }
-    await setPending(false)
+    setPending(false)
   }
 
   function handleDragOver(e: DragEvent<HTMLDivElement>){
@@ -138,7 +113,7 @@ export default function Home() {
         </AnimatePresence>
 
         <div className="max-w-[500px] mx-auto min-h-96 dark:bg-[#003333] bg-[#99FFFF]  border-gray-500 border-2 shadow-lg shadow-[#585F54] dark:shadow-[#969696] relative top-20 rounded-2xl grid grid-cols-1">
-          <form action={handleUpload}>
+          <form>
             { /* Header in UI of choosing file */ }
             <div className="font-bold p-3 text-2xl text-center">
               อัพโหลดไฟล์ใบรายงานคะแนน
@@ -190,7 +165,7 @@ export default function Home() {
             {/**Submit files button and clear files button*/}
             <div className="flex flex-row-reverse p-2 w-full">
               <Tooltip content="อ่านใบรายงานคะแนนนิสิต" color="success">
-                  <button type="submit" disabled={pending || !file} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">ตรวจสอบ</button>          
+                  <button type="button" onClick={handleUpload} disabled={pending || !file} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">ตรวจสอบ</button>          
               </Tooltip>
               <HelpComponent />
             </div>

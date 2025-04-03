@@ -1,6 +1,6 @@
 'use server'
 
-export async function handleUpload(prevState:any, formdata:FormData) {
+export async function fetchUpload(formdata:FormData) {
     const file = formdata.get("file")
     
     try{
