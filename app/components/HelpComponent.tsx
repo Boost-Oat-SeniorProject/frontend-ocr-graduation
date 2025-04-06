@@ -17,14 +17,14 @@ export default function HelpComponent(){
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     return (
         <>
-        <Button onPress={onOpen} variant="ghost" className="text-white">คู่มือ</Button>
+        <Button onPress={onOpen} variant="ghost" className="dark:text-white text-black">คู่มือ</Button>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
-            <ModalContent className="bg-[#003333]">
+            <ModalContent className="dark:bg-[#003333]">
                 {(onClose)=>(
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-center">วิธีการใช้งาน</ModalHeader>
                         <ModalBody className="mx-10">
-                            <Accordion>
+                            <Accordion className="bg-green-500">
                                 <AccordionItem key={1} title="การตรวจสอบใบรายงานคะแนนและพิมพ์ใบแบบตรวจสอบ" classNames={{title: "text-white font-bold text-center", trigger:"bg-black rounded-full"}}>
                                     <ul className="list-decimal">
                                         <li>ลากหรือกดพื้นที่สี่เหลี่นมกอบเส้นปะเพื่อ upload ใบรายงานคะแนนจาก<Link className="text-blue-500 hover:underline" href={"https://stdregis.ku.ac.th/"}>เว็บไซต์ระบบสารสนเทศ</Link></li>

@@ -165,7 +165,7 @@ export default function Home() {
             {/**Submit files button and clear files button*/}
             <div className="flex flex-row-reverse p-2 w-full">
               <Tooltip content="อ่านใบรายงานคะแนนนิสิต" color="success">
-                  <button type="button" onClick={handleUpload} disabled={pending || !file} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white">ตรวจสอบ</button>          
+                  <button type="button" onClick={handleUpload} disabled={pending || !file} className="bg-green-600 mx-2 px-3 py-1 rounded-md hover:bg-transparent hover:text-green-500 hover:ease-out duration-300 hover:ring-4 hover:ring-green-500 focus:ring-offset-2 text-white hover:cursor-pointer">ตรวจสอบ</button>          
               </Tooltip>
               <HelpComponent />
             </div>
