@@ -93,7 +93,6 @@ export default function Grade(){
     const rounter = useRouter()
     const errorRef = useRef<HTMLDivElement>(null)
     const [env, setEnv] = useState<EnvType>({BACKEND_URL: ""})
-    const [isDisabled, setDisabled] = useState<boolean>(true)
 
     useEffect(()=>{
         getEnv().then((env:any)=>{
@@ -171,6 +170,7 @@ export default function Grade(){
         if(respone.status){
             const newInfor = {...data, thaiName: `${infor.newInfor.firstname} ${infor.newInfor.lastname}`}
             localStorage.setItem("data", JSON.stringify(newInfor))
+            setData(JSON.parse(localStorage.getItem("data") || ""))
             addToast({
                 title: respone.message,
                 color: "success",
@@ -239,13 +239,6 @@ export default function Grade(){
                 studentId: studentId
             }
         })
-
-        if (firstname != data?.thaiName.split(" ")[0] || lastname != data?.thaiName.split(" ")[1] || studentId != data?.studentId){
-            console.log(firstname != data?.thaiName.split(" ")[0])
-            console.log(lastname != data?.thaiName.split(" ")[1])
-            console.log(studentId != data?.studentId)
-            setDisabled(false)
-        }
     }, [firstname, lastname, studentId])
 
     return (
@@ -284,7 +277,7 @@ export default function Grade(){
                     <div className="text-orange-400">{notice3}</div>
                 </div>
                 <div className="h-12 text-center">
-                    <Button onPress={handleUpdateInfor} isDisabled={isDisabled} color="success">แก้ไขข้อมูลนิสิต</Button>
+                    <Button onPress={handleUpdateInfor} isDisabled={notice1==="" && notice2==="" && notice3==="" ? false: true} color="success">แก้ไขข้อมูลนิสิต</Button>
                 </div>
             </div>
             <hr className="w-4/5 mx-auto border-black dark:border-white"/>
