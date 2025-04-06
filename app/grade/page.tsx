@@ -323,7 +323,7 @@ export default function Grade(){
                                         base:"text-sm dark:text-stone-300 text-stone-600 mx-4 my-5 border-4 border-gray-500",
                                         header: "dark:bg-[#033] text-lg bg-lime-400",
                                         body: "dark:bg-[#24493C] bg-green-300",
-                                        footer: "dark:bg-[#033] bg-lime-400"
+                                        footer: "dark:bg-[#033] bg-white"
                                     }}
                                 >
                                     <CardHeader>
