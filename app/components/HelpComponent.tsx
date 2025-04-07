@@ -24,7 +24,7 @@ export default function HelpComponent(){
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-center">วิธีการใช้งาน</ModalHeader>
                         <ModalBody className="mx-10">
-                            <Accordion className="bg-green-500">
+                            <Accordion>
                                 <AccordionItem key={1} title="การตรวจสอบใบรายงานคะแนนและพิมพ์ใบแบบตรวจสอบ" classNames={{title: "text-white font-bold text-center", trigger:"bg-black rounded-full"}}>
                                     <ul className="list-decimal">
                                         <li>ลากหรือกดพื้นที่สี่เหลี่นมกอบเส้นปะเพื่อ upload ใบรายงานคะแนนจาก<Link className="text-blue-500 hover:underline" href={"https://stdregis.ku.ac.th/"}>เว็บไซต์ระบบสารสนเทศ</Link></li>
