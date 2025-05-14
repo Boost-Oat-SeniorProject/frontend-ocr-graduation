@@ -18,6 +18,7 @@ export async function fetchUpload(formdata:FormData) {
         }
 
         const data = await result.json()
+        console.log(data)
         
         return {message: "", isNotPass: false, result: data}
 
